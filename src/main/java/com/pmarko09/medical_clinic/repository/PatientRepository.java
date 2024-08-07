@@ -43,10 +43,10 @@ public class PatientRepository {
     }
 
     public Optional<Patient> editPatient(String email, Patient editedPatient) {
+        if (emailAlreadyAdded(email)) {
+            throw new SamePatientEmailException(email);
+        }
         return getPatient(email).map(patient -> {
-            if (emailAlreadyAdded(email)) {
-                throw new SamePatientEmailException(email);
-            }
             patient.setFirstName(editedPatient.getFirstName());
             patient.setLastName(editedPatient.getLastName());
             patient.setEmail(editedPatient.getEmail());
