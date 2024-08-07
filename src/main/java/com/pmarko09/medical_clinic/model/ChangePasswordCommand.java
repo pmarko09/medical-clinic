@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ChangePasswordCommand {
 
-    private String password;
+    private String newPassword;
 
 
 
