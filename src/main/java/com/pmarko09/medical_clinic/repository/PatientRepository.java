@@ -1,5 +1,6 @@
 package com.pmarko09.medical_clinic.repository;
 
+import com.pmarko09.medical_clinic.exception.SamePatientEmailException;
 import com.pmarko09.medical_clinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -43,7 +44,9 @@ public class PatientRepository {
 
     public Optional<Patient> editPatient(String email, Patient editedPatient) {
         return getPatient(email).map(patient -> {
-
+            if (emailAlreadyAdded(email)) {
+                throw new SamePatientEmailException(email);
+            }
             patient.setFirstName(editedPatient.getFirstName());
             patient.setLastName(editedPatient.getLastName());
             patient.setEmail(editedPatient.getEmail());

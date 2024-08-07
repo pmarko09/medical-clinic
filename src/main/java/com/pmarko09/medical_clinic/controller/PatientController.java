@@ -1,6 +1,7 @@
 package com.pmarko09.medical_clinic.controller;
 
 import ch.qos.logback.classic.pattern.LineSeparatorConverter;
+import com.pmarko09.medical_clinic.model.ChangePasswordCommand;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class PatientController {
     }
 
     @PutMapping("/{email}/change-password")
-    public Patient changePatientPassword (@PathVariable ("email") String email, @RequestBody String newPassword) {
-        return patientService.changePassword(email, newPassword);
+    public Patient changePatientPassword (@PathVariable ("email") String email, @RequestBody ChangePasswordCommand newPassword) {
+        return patientService.changePassword(email, newPassword.getPassword());
     }
 }

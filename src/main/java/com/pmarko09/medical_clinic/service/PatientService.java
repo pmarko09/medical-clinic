@@ -27,9 +27,8 @@ public class PatientService {
         }
         if (patient.getFirstName() == null || patient.getLastName() == null || patient.getIdCardNo() == null) {
             throw new WrongPatientDataException("Firstname, lastname or id card can not be empty.");
-        } else {
-            return patientRepository.addPatient(patient);
         }
+        return patientRepository.addPatient(patient);
     }
 
     public Patient getPatient(String email) {
