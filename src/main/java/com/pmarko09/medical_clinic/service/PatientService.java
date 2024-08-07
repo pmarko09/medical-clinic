@@ -25,8 +25,12 @@ public class PatientService {
         if (patientRepository.emailAlreadyAdded(patient.getEmail())) {
             throw new SamePatientEmailException(patient.getEmail());
         }
-        if (patient.getFirstName() == null || patient.getLastName() == null || patient.getIdCardNo() == null) {
-            throw new WrongPatientDataException("Firstname, lastname or id card can not be empty.");
+        if (patient.getFirstName() == null) {
+            throw new WrongPatientDataException("Firstname can not be empty.");
+        } else if (patient.getLastName() == null) {
+            throw new WrongPatientDataException("Lastname can not be empty.");
+        } else if (patient.getIdCardNo() == null) {
+            throw new WrongPatientDataException("Id card can not be empty.");
         }
         return patientRepository.addPatient(patient);
     }
