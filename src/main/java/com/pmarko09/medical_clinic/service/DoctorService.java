@@ -1,14 +1,14 @@
 package com.pmarko09.medical_clinic.service;
 
 import com.pmarko09.medical_clinic.exception.DoctorNotFoundException;
-import com.pmarko09.medical_clinic.exception.SameDoctorEmailException;
-import com.pmarko09.medical_clinic.exception.WrongDoctorDataException;
-import com.pmarko09.medical_clinic.model.ChangePasswordCommand;
+import com.pmarko09.medical_clinic.exception.DoctorAlreadyExistException;
+import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -17,25 +17,36 @@ public class DoctorService {
 
     private final DoctorRepository doctorRepository;
 
-
     public List<Doctor> getDoctors() {
         return doctorRepository.getDoctors();
     }
 
     public Doctor addDoctor(Doctor doctor) {
-        if (doctorRepository.emailDoctorExist(doctor.getEmail())) {
-            throw new SameDoctorEmailException(doctor.getEmail());
+        if (doctorRepository.doctorExists(doctor.getEmail())) {
+            throw new DoctorAlreadyExistException(doctor.getEmail());
         }
-        if (doctor.getFirstName() == null) {
-            throw new WrongDoctorDataException("Firstname can not be null.");
-        }
-        if (doctor.getLastName() == null) {
-            throw new WrongDoctorDataException("Lastname can not be null.");
-        }
-        if (doctor.getEmail() == null) {
-            throw new WrongDoctorDataException("Email can not be null.");
-        }
+        validateDoctorFirstName(doctor.getFirstName());
+        validateDoctorLastName(doctor.getLastName());
+        validateDoctorEmail(doctor.getEmail());
         return doctorRepository.addDoctor(doctor);
+    }
+
+    private void validateDoctorFirstName(String firstName) {
+        if (firstName == null) {
+            throw new IllegalDoctorDataException("Firstname can not be null.");
+        }
+    }
+
+    private void validateDoctorLastName(String lastName) {
+        if (lastName == null) {
+            throw new IllegalDoctorDataException("Lastname can not be null.");
+        }
+    }
+
+    private void validateDoctorEmail(String email) {
+        if (email == null) {
+            throw new IllegalDoctorDataException("Email can not be null.");
+        }
     }
 
     public Doctor getDoctor(String email) {

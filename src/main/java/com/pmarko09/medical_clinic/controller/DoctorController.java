@@ -18,32 +18,32 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @GetMapping
-    public List<Doctor> getDoctors () {
+    public List<Doctor> getDoctors() {
         return doctorService.getDoctors();
     }
 
     @PostMapping
-    public Doctor addDoctor (@RequestBody Doctor doctor) {
+    public Doctor addDoctor(@RequestBody Doctor doctor) {
         return doctorService.addDoctor(doctor);
     }
 
-    @GetMapping ({"/{email}"})
-    public Doctor getDoctor (@PathVariable String email) {
+    @GetMapping({"/{email}"})
+    public Doctor getDoctor(@PathVariable String email) {
         return doctorService.getDoctor(email);
     }
 
-    @DeleteMapping ({"/{email}"})
+    @DeleteMapping({"/{email}"})
     public Doctor deleteDoctor(@PathVariable String email) {
         return doctorService.removeDoctor(email);
     }
 
-    @PutMapping ({"/{email}"})
+    @PutMapping({"/{email}"})
     public Doctor editDoctor(@PathVariable String email, @RequestBody Doctor updatedDoctor) {
         return doctorService.editDoctor(email, updatedDoctor);
     }
 
-    @PutMapping ({"/{email}/change-password"})
-    public Doctor changeDoctorPassword (@PathVariable String email, @RequestBody ChangePasswordCommand newPassword) {
+    @PatchMapping({"/{email}/password"})
+    public Doctor changeDoctorPassword(@PathVariable String email, @RequestBody ChangePasswordCommand newPassword) {
         return doctorService.changeDoctorPassword(email, newPassword.getPassword());
     }
 }

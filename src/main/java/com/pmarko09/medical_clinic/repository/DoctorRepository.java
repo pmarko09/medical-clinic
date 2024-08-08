@@ -1,11 +1,11 @@
 package com.pmarko09.medical_clinic.repository;
 
-import com.pmarko09.medical_clinic.exception.SameDoctorEmailException;
+import com.pmarko09.medical_clinic.exception.DoctorAlreadyExistException;
+import com.pmarko09.medical_clinic.exception.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.model.Doctor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class DoctorRepository {
                 .findFirst();
     }
 
-    public boolean emailDoctorExist (String email) {
+    public boolean doctorExists(String email) {
         return getDoctor(email).isPresent();
     }
 
@@ -44,8 +44,8 @@ public class DoctorRepository {
     }
 
     public Optional<Doctor> editDoctor(String email, Doctor newDoctor) {
-        if (emailDoctorExist(email)) {
-            throw new SameDoctorEmailException(email);
+        if (doctorExists(email)) {
+            throw new DoctorAlreadyExistException(email);
         }
         return getDoctor(email).map(doctor -> {
             doctor.setFirstName(newDoctor.getFirstName());
@@ -58,9 +58,6 @@ public class DoctorRepository {
     }
 
     public Optional<Doctor> changeDoctorPassword(String email, String newPassword) {
-        if (emailDoctorExist(email)) {
-            throw new SameDoctorEmailException(email);
-        }
         Optional<Doctor> doctor = getDoctor(email);
         doctor.ifPresent(d -> d.setPassword(newPassword));
         return doctor;
