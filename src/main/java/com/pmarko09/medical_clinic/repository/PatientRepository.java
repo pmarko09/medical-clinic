@@ -43,7 +43,7 @@ public class PatientRepository {
     }
 
     public Optional<Patient> editPatient(String email, Patient editedPatient) {
-        if (emailAlreadyAdded(email)) {
+        if (editedPatient.getEmail().equals(email)) {
             throw new SamePatientEmailException(email);
         }
         return getPatient(email).map(patient -> {

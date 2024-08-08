@@ -27,17 +27,17 @@ public class DoctorController {
         return doctorService.addDoctor(doctor);
     }
 
-    @GetMapping ({"/email"})
+    @GetMapping ({"/{email}"})
     public Doctor getDoctor (@PathVariable String email) {
         return doctorService.getDoctor(email);
     }
 
-    @DeleteMapping ({"/email"})
+    @DeleteMapping ({"/{email}"})
     public Doctor deleteDoctor(@PathVariable String email) {
         return doctorService.removeDoctor(email);
     }
 
-    @PutMapping ({"/email"})
+    @PutMapping ({"/{email}"})
     public Doctor editDoctor(@PathVariable String email, @RequestBody Doctor updatedDoctor) {
         return doctorService.editDoctor(email, updatedDoctor);
     }

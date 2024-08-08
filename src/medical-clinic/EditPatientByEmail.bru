@@ -1,22 +1,22 @@
 meta {
   name: EditPatientByEmail
   type: http
-  seq: 8
+  seq: 11
 }
 
 put {
-  url: http://localhost:8080/patients/jb@gmail.com
+  url: http://localhost:8080/patients/jaroB@gmail.com
   body: json
   auth: none
 }
 
 body:json {
   {
-      "email": "jaroB@gmail.com",
+      "email": "jarix@gmail.com",
       "password": "abcddddd",
       "idCardNo": "003",
-      "firstName": "JarekZmieniony",
-      "lastName": "NowakZmieniony",
+      "firstName": "ZmianaImie",
+      "lastName": "Zmiana Nazwisko",
       "phoneNumber": "555999000",
       "birthday": "1980-04-30"
   }
