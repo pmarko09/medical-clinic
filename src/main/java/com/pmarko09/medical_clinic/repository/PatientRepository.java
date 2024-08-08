@@ -1,11 +1,10 @@
 package com.pmarko09.medical_clinic.repository;
 
-import com.pmarko09.medical_clinic.exception.SamePatientEmailException;
+import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
 import com.pmarko09.medical_clinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,8 @@ public class PatientRepository {
         patients.add(patient);
         return patient;
     }
-    public boolean emailAlreadyAdded(String email) {
+
+    public boolean patientExists(String email) {
         return getPatient(email).isPresent();
     }
 
@@ -34,7 +34,7 @@ public class PatientRepository {
                 .findFirst();
     }
 
-    public Optional<Patient> removePatient(String email) {
+    public Optional<Patient> deletePatient(String email) {
         Optional<Patient> patientToBeRemoved = getPatient(email);
 
         patientToBeRemoved.ifPresent(patients::remove);
@@ -43,8 +43,8 @@ public class PatientRepository {
     }
 
     public Optional<Patient> editPatient(String email, Patient editedPatient) {
-        if (editedPatient.getEmail().equals(email)) {
-            throw new SamePatientEmailException(email);
+        if (patientExists(editedPatient.getEmail()) && !email.equals(editedPatient.getEmail())) {
+            throw new PatientAlreadyExistException(email);
         }
         return getPatient(email).map(patient -> {
             patient.setFirstName(editedPatient.getFirstName());

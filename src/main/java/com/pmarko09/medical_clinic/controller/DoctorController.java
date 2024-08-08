@@ -7,7 +7,6 @@ import com.pmarko09.medical_clinic.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import java.util.List;
 
 @RestController
@@ -27,22 +26,22 @@ public class DoctorController {
         return doctorService.addDoctor(doctor);
     }
 
-    @GetMapping({"/{email}"})
+    @GetMapping("/{email}")
     public Doctor getDoctor(@PathVariable String email) {
         return doctorService.getDoctor(email);
     }
 
-    @DeleteMapping({"/{email}"})
+    @DeleteMapping("/{email}")
     public Doctor deleteDoctor(@PathVariable String email) {
-        return doctorService.removeDoctor(email);
+        return doctorService.deleteDoctor(email);
     }
 
-    @PutMapping({"/{email}"})
+    @PutMapping("/{email}")
     public Doctor editDoctor(@PathVariable String email, @RequestBody Doctor updatedDoctor) {
         return doctorService.editDoctor(email, updatedDoctor);
     }
 
-    @PatchMapping({"/{email}/password"})
+    @PatchMapping("/{email}/password")
     public Doctor changeDoctorPassword(@PathVariable String email, @RequestBody ChangePasswordCommand newPassword) {
         return doctorService.changeDoctorPassword(email, newPassword.getPassword());
     }

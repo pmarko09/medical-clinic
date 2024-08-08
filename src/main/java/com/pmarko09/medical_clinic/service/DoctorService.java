@@ -8,7 +8,6 @@ import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -54,7 +53,7 @@ public class DoctorService {
                 .orElseThrow(() -> new DoctorNotFoundException(email));
     }
 
-    public Doctor removeDoctor(String email) {
+    public Doctor deleteDoctor(String email) {
         return doctorRepository.deleteDoctor(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
     }

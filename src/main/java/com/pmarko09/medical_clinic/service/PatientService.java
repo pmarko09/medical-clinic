@@ -1,12 +1,12 @@
 package com.pmarko09.medical_clinic.service;
 
+import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.exception.PatientNotFoundException;
-import com.pmarko09.medical_clinic.exception.SamePatientEmailException;
-import com.pmarko09.medical_clinic.exception.WrongPatientDataException;
+import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
+import com.pmarko09.medical_clinic.exception.IllegalPatientDataException;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,17 +22,31 @@ public class PatientService {
     }
 
     public Patient addPatient(Patient patient) {
-        if (patientRepository.emailAlreadyAdded(patient.getEmail())) {
-            throw new SamePatientEmailException(patient.getEmail());
+        if (patientRepository.patientExists(patient.getEmail())) {
+            throw new PatientAlreadyExistException(patient.getEmail());
         }
-        if (patient.getFirstName() == null) {
-            throw new WrongPatientDataException("Firstname can not be empty.");
-        } else if (patient.getLastName() == null) {
-            throw new WrongPatientDataException("Lastname can not be empty.");
-        } else if (patient.getIdCardNo() == null) {
-            throw new WrongPatientDataException("Id card can not be empty.");
-        }
+        validatePatientFirstName(patient.getFirstName());
+        validatePatientLastName(patient.getLastName());
+        validatePatientEmail(patient.getEmail());
         return patientRepository.addPatient(patient);
+    }
+
+    private void validatePatientFirstName(String firstName) {
+        if (firstName == null) {
+            throw new IllegalDoctorDataException("Firstname can not be null.");
+        }
+    }
+
+    private void validatePatientLastName(String lastName) {
+        if (lastName == null) {
+            throw new IllegalDoctorDataException("Lastname can not be null.");
+        }
+    }
+
+    private void validatePatientEmail(String email) {
+        if (email == null) {
+            throw new IllegalDoctorDataException("Email can not be null.");
+        }
     }
 
     public Patient getPatient(String email) {
@@ -40,8 +54,8 @@ public class PatientService {
                 .orElseThrow(() -> new PatientNotFoundException(email));
     }
 
-    public Patient removePatient(String email) {
-        return patientRepository.removePatient(email)
+    public Patient deletePatient(String email) {
+        return patientRepository.deletePatient(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
     }
 
