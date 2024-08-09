@@ -25,28 +25,8 @@ public class PatientService {
         if (patientRepository.patientExists(patient.getEmail())) {
             throw new PatientAlreadyExistException(patient.getEmail());
         }
-        validatePatientFirstName(patient.getFirstName());
-        validatePatientLastName(patient.getLastName());
-        validatePatientEmail(patient.getEmail());
+        validatePatientData(patient);
         return patientRepository.addPatient(patient);
-    }
-
-    private void validatePatientFirstName(String firstName) {
-        if (firstName == null) {
-            throw new IllegalDoctorDataException("Firstname can not be null.");
-        }
-    }
-
-    private void validatePatientLastName(String lastName) {
-        if (lastName == null) {
-            throw new IllegalDoctorDataException("Lastname can not be null.");
-        }
-    }
-
-    private void validatePatientEmail(String email) {
-        if (email == null) {
-            throw new IllegalDoctorDataException("Email can not be null.");
-        }
     }
 
     public Patient getPatient(String email) {
@@ -68,4 +48,17 @@ public class PatientService {
         return patientRepository.changePassword(email, newPassword)
                 .orElseThrow(() -> new PatientNotFoundException(email));
     }
+
+    private void validatePatientData(Patient patient) {
+        if (patient.getFirstName() == null) {
+            throw new IllegalDoctorDataException("Firstname can not be null.");
+        }
+        if (patient.getLastName() == null) {
+            throw new IllegalDoctorDataException("Lastname can not be null.");
+        }
+        if (patient.getEmail() == null) {
+            throw new IllegalDoctorDataException("Email can not be null.");
+        }
+    }
+
 }

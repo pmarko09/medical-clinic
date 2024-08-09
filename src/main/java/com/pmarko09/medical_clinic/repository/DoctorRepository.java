@@ -35,7 +35,6 @@ public class DoctorRepository {
         return getDoctor(email).isPresent();
     }
 
-
     public Optional<Doctor> deleteDoctor(String email) {
         Optional<Doctor> doctorToBeRemoved = getDoctor(email);
 
