@@ -1,6 +1,5 @@
 package com.pmarko09.medical_clinic.controller;
 
-
 import com.pmarko09.medical_clinic.model.ChangePasswordCommand;
 import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.service.DoctorService;

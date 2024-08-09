@@ -58,7 +58,7 @@ public class DoctorRepository {
 
     public Optional<Doctor> changeDoctorPassword(String email, String newPassword) {
         Optional<Doctor> doctor = getDoctor(email);
-        doctor.ifPresent(d -> d.setPassword(newPassword));
+        doctor.ifPresent(doctor1 -> doctor1.setPassword(newPassword));
         return doctor;
     }
 }
