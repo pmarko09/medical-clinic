@@ -1,6 +1,5 @@
 package com.pmarko09.medical_clinic.controller;
 
-import ch.qos.logback.classic.pattern.LineSeparatorConverter;
 import com.pmarko09.medical_clinic.model.ChangePasswordCommand;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.service.PatientService;
@@ -26,23 +25,23 @@ public class PatientController {
         return patientService.addPatient(patient);
     }
 
-    @GetMapping ("/{email}")
+    @GetMapping("/{email}")
     public Patient getPatient(@PathVariable String email) {
         return patientService.getPatient(email);
     }
 
-    @DeleteMapping ("/{email}")
-    public Patient removePatient (@PathVariable String email) {
-        return patientService.removePatient(email);
+    @DeleteMapping("/{email}")
+    public Patient deletePatient(@PathVariable String email) {
+        return patientService.deletePatient(email);
     }
 
-    @PutMapping ("/{email}")
-    public Patient editPatient (@PathVariable("email") String email, @RequestBody Patient editedPatient) {
-        return patientService.editPatient(email, editedPatient);
+    @PutMapping("/{email}")
+    public Patient editPatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
+        return patientService.editPatient(email, updatedPatient);
     }
 
-    @PutMapping("/{email}/change-password")
-    public Patient changePatientPassword (@PathVariable ("email") String email, @RequestBody ChangePasswordCommand newPassword) {
+    @PatchMapping("/{email}/change-password")
+    public Patient changePatientPassword(@PathVariable("email") String email, @RequestBody ChangePasswordCommand newPassword) {
         return patientService.changePassword(email, newPassword.getPassword());
     }
 }
