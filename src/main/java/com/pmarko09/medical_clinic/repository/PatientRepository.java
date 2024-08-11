@@ -38,14 +38,10 @@ public class PatientRepository {
         Optional<Patient> patientToBeRemoved = getPatient(email);
 
         patientToBeRemoved.ifPresent(patients::remove);
-
         return patientToBeRemoved;
     }
 
     public Optional<Patient> editPatient(String email, Patient editedPatient) {
-        if (patientExists(editedPatient.getEmail()) && !email.equals(editedPatient.getEmail())) {
-            throw new PatientAlreadyExistException(email);
-        }
         return getPatient(email).map(patient -> {
             patient.setFirstName(editedPatient.getFirstName());
             patient.setLastName(editedPatient.getLastName());
@@ -61,7 +57,7 @@ public class PatientRepository {
     public Optional<Patient> changePassword(String email, String newPassword) {
         Optional<Patient> patient = getPatient(email);
 
-        patient.ifPresent(pt -> pt.setPassword(newPassword));
+        patient.ifPresent(patient1 -> patient1.setPassword(newPassword));
 
         return patient;
     }
