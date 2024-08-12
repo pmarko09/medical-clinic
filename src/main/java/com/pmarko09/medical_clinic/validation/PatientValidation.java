@@ -1,4 +1,4 @@
-package com.pmarko09.medical_clinic.patient_validation;
+package com.pmarko09.medical_clinic.validation;
 
 import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.model.Patient;

@@ -1,19 +1,16 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.exception.PatientNotFoundException;
 import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
-import com.pmarko09.medical_clinic.exception.IllegalPatientDataException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.model.PatientDTO;
-import com.pmarko09.medical_clinic.patient_validation.PatientValidation;
+import com.pmarko09.medical_clinic.validation.PatientValidation;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

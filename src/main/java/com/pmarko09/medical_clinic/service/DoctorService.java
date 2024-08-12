@@ -2,11 +2,10 @@ package com.pmarko09.medical_clinic.service;
 
 import com.pmarko09.medical_clinic.exception.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.exception.DoctorAlreadyExistException;
-import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.model.DoctorDTO;
-import com.pmarko09.medical_clinic.patient_validation.DoctorValidation;
+import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,9 +51,9 @@ public class DoctorService {
         }
         DoctorValidation.validateDoctorData(updatedDoctor);
 
-        Doctor doctor = doctorRepository.editDoctor(email, updatedDoctor)
+        Doctor editedDoctor = doctorRepository.editDoctor(email, updatedDoctor)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
-        return DoctorMapper.toDto(doctor);
+        return DoctorMapper.toDto(editedDoctor);
     }
 
     public DoctorDTO changeDoctorPassword(String email, String newPassword) {

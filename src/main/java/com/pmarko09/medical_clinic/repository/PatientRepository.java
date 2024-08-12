@@ -1,6 +1,5 @@
 package com.pmarko09.medical_clinic.repository;
 
-import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
 import com.pmarko09.medical_clinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -55,10 +54,10 @@ public class PatientRepository {
     }
 
     public Optional<Patient> changePassword(String email, String newPassword) {
-        Optional<Patient> patient = getPatient(email);
+        Optional<Patient> updatedPatient = getPatient(email);
 
-        patient.ifPresent(patient1 -> patient1.setPassword(newPassword));
+        updatedPatient.ifPresent(patient -> patient.setPassword(newPassword));
 
-        return patient;
+        return updatedPatient;
     }
 }
