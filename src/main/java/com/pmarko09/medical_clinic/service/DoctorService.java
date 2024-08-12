@@ -26,9 +26,7 @@ public class DoctorService {
     }
 
     public Doctor addDoctor(Doctor doctor) {
-        if (doctorRepository.doctorExists(doctor.getEmail())) {
-            throw new DoctorAlreadyExistException(doctor.getEmail());
-        }
+        DoctorValidation.doctorEmailInUse(doctorRepository, doctor.getEmail());
         DoctorValidation.validateDoctorData(doctor);
         return doctorRepository.addDoctor(doctor);
     }
