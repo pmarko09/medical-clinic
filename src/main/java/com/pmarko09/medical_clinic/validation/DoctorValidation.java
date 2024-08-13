@@ -4,7 +4,10 @@ import com.pmarko09.medical_clinic.exception.DoctorAlreadyExistException;
 import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DoctorValidation {
 
     public static void validateDoctorData(Doctor doctor) {

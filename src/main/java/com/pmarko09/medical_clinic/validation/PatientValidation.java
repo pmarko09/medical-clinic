@@ -4,8 +4,11 @@ import com.pmarko09.medical_clinic.exception.IllegalPatientDataException;
 import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-public class PatientValidation {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class PatientValidation {
 
     public static void validatePatientData(Patient patient) {
         if (patient.getFirstName() == null) {

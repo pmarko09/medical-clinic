@@ -19,8 +19,7 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
 
     public List<DoctorDTO> getDoctors() {
-        List<Doctor> doctors = doctorRepository.getDoctors();
-        return doctors.stream()
+        return doctorRepository.getDoctors().stream()
                 .map(DoctorMapper::toDto)
                 .toList();
     }
