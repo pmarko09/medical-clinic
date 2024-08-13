@@ -1,6 +1,5 @@
 package com.pmarko09.medical_clinic.repository;
 
-import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
 import com.pmarko09.medical_clinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -38,14 +37,10 @@ public class PatientRepository {
         Optional<Patient> patientToBeRemoved = getPatient(email);
 
         patientToBeRemoved.ifPresent(patients::remove);
-
         return patientToBeRemoved;
     }
 
     public Optional<Patient> editPatient(String email, Patient editedPatient) {
-        if (patientExists(editedPatient.getEmail()) && !email.equals(editedPatient.getEmail())) {
-            throw new PatientAlreadyExistException(email);
-        }
         return getPatient(email).map(patient -> {
             patient.setFirstName(editedPatient.getFirstName());
             patient.setLastName(editedPatient.getLastName());
@@ -59,10 +54,10 @@ public class PatientRepository {
     }
 
     public Optional<Patient> changePassword(String email, String newPassword) {
-        Optional<Patient> patient = getPatient(email);
+        Optional<Patient> updatedPatient = getPatient(email);
 
-        patient.ifPresent(pt -> pt.setPassword(newPassword));
+        updatedPatient.ifPresent(patient -> patient.setPassword(newPassword));
 
-        return patient;
+        return updatedPatient;
     }
 }

@@ -2,8 +2,10 @@ package com.pmarko09.medical_clinic.service;
 
 import com.pmarko09.medical_clinic.exception.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.exception.DoctorAlreadyExistException;
-import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
+import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.Doctor;
+import com.pmarko09.medical_clinic.model.DoctorDTO;
+import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,48 +18,45 @@ public class DoctorService {
 
     private final DoctorRepository doctorRepository;
 
-    public List<Doctor> getDoctors() {
-        return doctorRepository.getDoctors();
+    public List<DoctorDTO> getDoctors() {
+        return doctorRepository.getDoctors().stream()
+                .map(DoctorMapper::toDto)
+                .toList();
     }
 
     public Doctor addDoctor(Doctor doctor) {
-        if (doctorRepository.doctorExists(doctor.getEmail())) {
-            throw new DoctorAlreadyExistException(doctor.getEmail());
-        }
-        validateDoctorData(doctor);
+        DoctorValidation.doctorEmailInUse(doctorRepository, doctor.getEmail());
+        DoctorValidation.validateDoctorData(doctor);
         return doctorRepository.addDoctor(doctor);
     }
 
-    public Doctor getDoctor(String email) {
-        return doctorRepository.getDoctor(email)
+    public DoctorDTO getDoctorDto(String email) {
+        Doctor doctor = doctorRepository.getDoctor(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
+        return DoctorMapper.toDto(doctor);
     }
 
-    public Doctor deleteDoctor(String email) {
-        return doctorRepository.deleteDoctor(email)
+    public DoctorDTO deleteDoctorDto(String email) {
+        Doctor doctor = doctorRepository.deleteDoctor(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
+        return DoctorMapper.toDto(doctor);
     }
 
-    public Doctor editDoctor(String email, Doctor newDoctor) {
-        return doctorRepository.editDoctor(email, newDoctor)
-                .orElseThrow(() -> new DoctorNotFoundException(email));
-    }
-
-    public Doctor changeDoctorPassword(String email, String newPassword) {
-        return doctorRepository.changeDoctorPassword(email, newPassword)
-                .orElseThrow(() -> new DoctorNotFoundException(email));
-    }
-
-    private void validateDoctorData(Doctor doctor) {
-        if (doctor.getFirstName() == null) {
-            throw new IllegalDoctorDataException("Firstname can not be null.");
+    public DoctorDTO editDoctor(String email, Doctor updatedDoctor) {
+        if (doctorRepository.doctorExists(updatedDoctor.getEmail()) && !email.equals(updatedDoctor.getEmail())) {
+            throw new DoctorAlreadyExistException(updatedDoctor.getEmail());
         }
-        if (doctor.getLastName() == null) {
-            throw new IllegalDoctorDataException("Lastname can not be null.");
-        }
-        if (doctor.getEmail() == null) {
-            throw new IllegalDoctorDataException("Email can not be null.");
-        }
+        DoctorValidation.validateDoctorData(updatedDoctor);
+
+        Doctor editedDoctor = doctorRepository.editDoctor(email, updatedDoctor)
+                .orElseThrow(() -> new DoctorNotFoundException(email));
+        return DoctorMapper.toDto(editedDoctor);
+    }
+
+    public DoctorDTO changeDoctorPassword(String email, String newPassword) {
+        Doctor doctor = doctorRepository.changeDoctorPassword(email, newPassword)
+                .orElseThrow(() -> new DoctorNotFoundException(email));
+        return DoctorMapper.toDto(doctor);
     }
 
 }

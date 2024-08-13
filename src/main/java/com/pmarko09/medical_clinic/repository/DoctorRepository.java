@@ -43,9 +43,6 @@ public class DoctorRepository {
     }
 
     public Optional<Doctor> editDoctor(String email, Doctor newDoctor) {
-        if (doctorExists(newDoctor.getEmail()) && !email.equals(newDoctor.getEmail())) {
-            throw new DoctorAlreadyExistException(email);
-        }
         return getDoctor(email).map(doctor -> {
             doctor.setFirstName(newDoctor.getFirstName());
             doctor.setLastName(newDoctor.getLastName());
