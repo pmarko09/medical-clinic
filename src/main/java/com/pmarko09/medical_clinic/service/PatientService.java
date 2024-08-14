@@ -2,7 +2,7 @@ package com.pmarko09.medical_clinic.service;
 
 import com.pmarko09.medical_clinic.exception.PatientNotFoundException;
 import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
-import com.pmarko09.medical_clinic.mapper.PatientPatientDTOMapper;
+import com.pmarko09.medical_clinic.mapper.PatientMapper;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.model.PatientDTO;
 import com.pmarko09.medical_clinic.validation.PatientValidation;
@@ -17,11 +17,11 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository patientRepository;
-    private final PatientPatientDTOMapper patientPatientDTOMapper;
+    private final PatientMapper patientMapper;
 
     public List<PatientDTO> getPatients() {
         return patientRepository.getPatients().stream()
-                .map(patientPatientDTOMapper::patientToPatientDTO)
+                .map(patientMapper::toDto)
                 .toList();
     }
 
@@ -34,13 +34,13 @@ public class PatientService {
     public PatientDTO getPatientDto(String email) {
         Patient patient = patientRepository.getPatient(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
-        return patientPatientDTOMapper.patientToPatientDTO(patient);
+        return patientMapper.toDto(patient);
     }
 
     public PatientDTO deletePatientDto(String email) {
         Patient patient = patientRepository.deletePatient(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
-        return patientPatientDTOMapper.patientToPatientDTO(patient);
+        return patientMapper.toDto(patient);
     }
 
     public PatientDTO editPatient(String email, Patient editedPatient) {
@@ -51,14 +51,14 @@ public class PatientService {
 
         Patient editedPatient1 = patientRepository.editPatient(email, editedPatient)
                 .orElseThrow(() -> new PatientNotFoundException(email));
-        return patientPatientDTOMapper.patientToPatientDTO(editedPatient1);
+        return patientMapper.toDto(editedPatient1);
     }
 
     public PatientDTO changePassword(String email, String newPassword) {
         Patient patient = patientRepository.changePassword(email, newPassword)
                 .orElseThrow(() -> new PatientNotFoundException(email));
 
-        return patientPatientDTOMapper.patientToPatientDTO(patient);
+        return patientMapper.toDto(patient);
     }
 
 }
