@@ -14,11 +14,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "string")
+@Mapper(componentModel = "spring")
 public abstract class DoctorMapper {
 
     @Autowired
-    protected PatientRepository patientRepository;
+    public PatientRepository patientRepository;
 
     @Mapping(source = "patientList", target = "patients", qualifiedByName = "patientsListToEmails")
     public abstract DoctorDTO toDto(Doctor doctor);
@@ -27,7 +27,7 @@ public abstract class DoctorMapper {
     public abstract Doctor toDoctor(DoctorDTO doctorDTO);
 
     @Named("patientsListToEmails")
-    List<String> patientsListToEmails(List<Patient> patients) {
+    public List<String> patientsListToEmails(List<Patient> patients) {
         if (patients == null || patients.isEmpty()) {
             return Collections.emptyList();
         }
@@ -37,7 +37,7 @@ public abstract class DoctorMapper {
     }
 
     @Named("emailsToPatientList")
-    List<Patient> emailsToPatientList(List<String> emails) {
+    public List<Patient> emailsToPatientList(List<String> emails) {
         if (emails == null || emails.isEmpty()) {
             return Collections.emptyList();
         }
@@ -50,5 +50,3 @@ public abstract class DoctorMapper {
     }
 
 }
-
-
