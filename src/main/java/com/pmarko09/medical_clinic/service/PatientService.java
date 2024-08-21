@@ -17,10 +17,11 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final PatientMapper patientMapper;
 
     public List<PatientDTO> getPatients() {
         return patientRepository.getPatients().stream()
-                .map(PatientMapper::toDto)
+                .map(patientMapper::toDto)
                 .toList();
     }
 
@@ -33,13 +34,13 @@ public class PatientService {
     public PatientDTO getPatientDto(String email) {
         Patient patient = patientRepository.getPatient(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
-        return PatientMapper.toDto(patient);
+        return patientMapper.toDto(patient);
     }
 
     public PatientDTO deletePatientDto(String email) {
         Patient patient = patientRepository.deletePatient(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
-        return PatientMapper.toDto(patient);
+        return patientMapper.toDto(patient);
     }
 
     public PatientDTO editPatient(String email, Patient editedPatient) {
@@ -50,14 +51,14 @@ public class PatientService {
 
         Patient editedPatient1 = patientRepository.editPatient(email, editedPatient)
                 .orElseThrow(() -> new PatientNotFoundException(email));
-        return PatientMapper.toDto(editedPatient1);
+        return patientMapper.toDto(editedPatient1);
     }
 
     public PatientDTO changePassword(String email, String newPassword) {
         Patient patient = patientRepository.changePassword(email, newPassword)
                 .orElseThrow(() -> new PatientNotFoundException(email));
 
-        return PatientMapper.toDto(patient);
+        return patientMapper.toDto(patient);
     }
 
 }

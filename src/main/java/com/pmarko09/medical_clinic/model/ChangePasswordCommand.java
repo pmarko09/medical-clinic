@@ -7,4 +7,7 @@ public class ChangePasswordCommand {
 
     private String password;
 
+    public String getPassword() {
+        return password;
+    }
 }
