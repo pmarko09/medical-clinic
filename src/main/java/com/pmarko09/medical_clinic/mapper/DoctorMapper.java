@@ -43,7 +43,7 @@ public abstract class DoctorMapper {
         }
         return emails.stream()
                 .map(email -> {
-                    return patientRepository.getPatient(email)
+                    return patientRepository.findByEmail(email)
                             .orElseThrow(() -> new PatientNotFoundException(email));
                 })
                 .collect(Collectors.toList());

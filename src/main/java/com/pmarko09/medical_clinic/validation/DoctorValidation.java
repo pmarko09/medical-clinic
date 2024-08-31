@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 public class DoctorValidation {
 
     public static void validateDoctorData(Doctor doctor) {
-        if (doctor.getFirstName() == null) {
+        if (doctor.getFirstName() == null || doctor.getFirstName().isEmpty()) {
             throw new IllegalDoctorDataException("Doctor's firstname can not be null.");
         }
-        if (doctor.getLastName() == null) {
+        if (doctor.getLastName() == null || doctor.getLastName().isEmpty()) {
             throw new IllegalDoctorDataException("Doctor's lastname can not be null.");
         }
-        if (doctor.getEmail() == null) {
+        if (doctor.getEmail() == null || doctor.getEmail().isEmpty()) {
             throw new IllegalDoctorDataException("Doctor's email can not be null.");
         }
     }
 
     public static void doctorEmailInUse(DoctorRepository doctorRepository, String email) {
-        if (doctorRepository.doctorExists(email)) {
+        if (doctorRepository.findByEmail(email).isPresent()) {
             throw new DoctorAlreadyExistException(email);
         }
     }
