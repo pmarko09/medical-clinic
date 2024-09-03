@@ -27,4 +27,12 @@ public class DoctorValidation {
             throw new DoctorAlreadyExistException(email);
         }
     }
+
+    public static void doctorAlreadyExists(DoctorRepository doctorRepository, String email, Doctor updatedDoctor) {
+        doctorRepository.findByEmail(updatedDoctor.getEmail())
+                .filter(existingDoctor -> !existingDoctor.getEmail().equals(email))
+                .ifPresent(existingDoctor -> {
+                    throw new DoctorAlreadyExistException(updatedDoctor.getEmail());
+                });
+    }
 }

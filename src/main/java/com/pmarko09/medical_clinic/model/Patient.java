@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table (name = "Patients")
+@Table (name = "PATIENTS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,8 +25,13 @@ public class Patient {
     private String phoneNumber;
     private LocalDate birthday;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
-
+    public static void update(Patient patient, Patient editedPatient) {
+        patient.setFirstName(editedPatient.getFirstName());
+        patient.setLastName(editedPatient.getLastName());
+        patient.setEmail(editedPatient.getEmail());
+        patient.setPassword(editedPatient.getPassword());
+        patient.setPhoneNumber(editedPatient.getPhoneNumber());
+        patient.setIdCardNo(editedPatient.getIdCardNo());
+        patient.setBirthday(editedPatient.getBirthday());
+    }
 }

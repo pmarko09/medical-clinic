@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
-@Table (name = "Doctors")
+@Table(name = "DOCTORS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +21,11 @@ public class Doctor {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Patient> patientList;
-
+    public static void update(Doctor doctor, Doctor updatedDoctor) {
+        doctor.setFirstName(updatedDoctor.getFirstName());
+        doctor.setLastName(updatedDoctor.getLastName());
+        doctor.setEmail(updatedDoctor.getEmail());
+        doctor.setPassword(updatedDoctor.getPassword());
+        doctor.setSpecialization(updatedDoctor.getSpecialization());
+    }
 }
