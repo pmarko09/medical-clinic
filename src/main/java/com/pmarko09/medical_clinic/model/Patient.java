@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
-@Table (name = "PATIENTS")
+@Table(name = "PATIENTS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +24,9 @@ public class Patient {
     private String lastName;
     private String phoneNumber;
     private LocalDate birthday;
+
+    @ManyToMany(mappedBy = "patients")
+    private Set<Doctor> doctors;
 
     public static void update(Patient patient, Patient editedPatient) {
         patient.setFirstName(editedPatient.getFirstName());

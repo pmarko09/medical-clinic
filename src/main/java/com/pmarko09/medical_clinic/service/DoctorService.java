@@ -1,10 +1,12 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.DoctorNotFoundException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.model.DoctorDTO;
+import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
+import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
     private final DoctorMapper doctorMapper;
 
     public List<DoctorDTO> getDoctors() {
@@ -31,26 +34,26 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    public DoctorDTO getDoctorDto(String email) {
+    public DoctorDTO getDoctorDtoByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
         return doctorMapper.toDto(doctor);
     }
 
-    public DoctorDTO deleteDoctorDto(String email) {
+    public DoctorDTO deleteDoctorDtoByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
         doctorRepository.delete(doctor);
         return doctorMapper.toDto(doctor);
     }
 
-    public DoctorDTO editDoctor(String email, Doctor updatedDoctor) {
-        DoctorValidation.doctorAlreadyExists(doctorRepository, email, updatedDoctor);
-        DoctorValidation.validateDoctorData(updatedDoctor);
+    public DoctorDTO editDoctorDtoByEmail(String email, Doctor editedDoctor) {
+        DoctorValidation.doctorAlreadyExists(doctorRepository, email, editedDoctor);
+        DoctorValidation.validateDoctorData(editedDoctor);
 
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
-        Doctor.update(doctor, updatedDoctor);
+        Doctor.update(doctor, editedDoctor);
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
@@ -64,4 +67,29 @@ public class DoctorService {
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
+    public DoctorDTO addPatientToDoctor(Long doctorId, Long patientId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+
+        doctor.getPatients().add(patient);
+        doctorRepository.save(doctor);
+
+        return doctorMapper.toDto(doctor);
+    }
+
+    public DoctorDTO removePatientFromDoctor(Long doctorId, Long patientId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+
+        doctor.getPatients().remove(patient);
+        doctorRepository.save(doctor);
+
+        return doctorMapper.toDto(doctor);
+    }
 }

@@ -1,4 +1,4 @@
-package com.pmarko09.medical_clinic.exception;
+package com.pmarko09.medical_clinic.exception.patient;
 
 public class PatientNotFoundException extends RuntimeException {
     public PatientNotFoundException(String email) {

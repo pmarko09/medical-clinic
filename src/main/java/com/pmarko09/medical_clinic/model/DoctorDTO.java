@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +15,6 @@ public class DoctorDTO {
     private String lastName;
     private String specialization;
     private String email;
-    private List<String> patients;
+    private Set<HospitalDTO> hospitals;
 
 }

@@ -1,4 +1,4 @@
-package com.pmarko09.medical_clinic.exception;
+package com.pmarko09.medical_clinic.exception.doctor;
 
 public class DoctorAlreadyExistException extends RuntimeException {
     public DoctorAlreadyExistException(String email) {

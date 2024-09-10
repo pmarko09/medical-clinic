@@ -1,9 +1,11 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.PatientNotFoundException;
+import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
+import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.model.PatientDTO;
+import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import com.pmarko09.medical_clinic.validation.PatientValidation;
@@ -17,6 +19,7 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
     private final PatientMapper patientMapper;
 
     public List<PatientDTO> getPatients() {
@@ -25,26 +28,26 @@ public class PatientService {
                 .toList();
     }
 
-    public Patient addPatient(Patient patient) {
+    public Patient addPatientByEmail(Patient patient) {
         PatientValidation.patientEmailInUse(patientRepository, patient.getEmail());
         PatientValidation.validatePatientData(patient);
         return patientRepository.save(patient);
     }
 
-    public PatientDTO getPatientDto(String email) {
+    public PatientDTO getPatientDtoByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
         return patientMapper.toDto(patient);
     }
 
-    public PatientDTO deletePatientDto(String email) {
+    public PatientDTO deletePatientDtoByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
         patientRepository.delete(patient);
         return patientMapper.toDto(patient);
     }
 
-    public PatientDTO editPatient(String email, Patient editedPatient) {
+    public PatientDTO editPatientByEmail(String email, Patient editedPatient) {
         PatientValidation.patientAlreadyExist(patientRepository, email, editedPatient);
         PatientValidation.validatePatientData(editedPatient);
 
@@ -62,5 +65,31 @@ public class PatientService {
         patient.setPassword(newPassword);
 
         return patientMapper.toDto(patientRepository.save(patient));
+    }
+
+    public PatientDTO addDoctorToPatient(Long patientId, Long doctorId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+
+        patient.getDoctors().add(doctor);
+        patientRepository.save(patient);
+
+        return patientMapper.toDto(patient);
+    }
+
+    public PatientDTO removeDoctorFromPatient(Long patientId, Long doctorId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+
+        patient.getDoctors().remove(doctor);
+        patientRepository.save(patient);
+
+        return patientMapper.toDto(patient);
     }
 }

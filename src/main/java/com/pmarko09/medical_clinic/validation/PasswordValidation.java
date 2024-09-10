@@ -1,6 +1,6 @@
 package com.pmarko09.medical_clinic.validation;
 
-import com.pmarko09.medical_clinic.exception.IllegalPatientDataException;
+import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
 
 public class PasswordValidation {
 

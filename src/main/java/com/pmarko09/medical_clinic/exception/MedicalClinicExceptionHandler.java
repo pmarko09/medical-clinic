@@ -1,5 +1,11 @@
 package com.pmarko09.medical_clinic.exception;
 
+import com.pmarko09.medical_clinic.exception.doctor.DoctorAlreadyExistException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
+import com.pmarko09.medical_clinic.exception.doctor.IllegalDoctorDataException;
+import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
+import com.pmarko09.medical_clinic.exception.patient.PatientAlreadyExistException;
+import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
 import com.pmarko09.medical_clinic.model.ErrorMessageDTO;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;

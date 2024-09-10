@@ -23,26 +23,36 @@ public class PatientController {
 
     @PostMapping
     public Patient addPatient(@RequestBody Patient patient) {
-        return patientService.addPatient(patient);
+        return patientService.addPatientByEmail(patient);
     }
 
     @GetMapping("/{email}")
     public PatientDTO getPatient(@PathVariable String email) {
-        return patientService.getPatientDto(email);
+        return patientService.getPatientDtoByEmail(email);
     }
 
     @DeleteMapping("/{email}")
     public PatientDTO deletePatient(@PathVariable String email) {
-        return patientService.deletePatientDto(email);
+        return patientService.deletePatientDtoByEmail(email);
     }
 
     @PutMapping("/{email}")
     public PatientDTO editPatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        return patientService.editPatient(email, updatedPatient);
+        return patientService.editPatientByEmail(email, updatedPatient);
     }
 
     @PatchMapping("/{email}/password")
     public PatientDTO changePatientPassword(@PathVariable("email") String email, @RequestBody ChangePasswordCommand newPassword) {
         return patientService.changePassword(email, newPassword.getPassword());
+    }
+
+    @PostMapping("/{patientId}/doctors/{doctorId}")
+    public PatientDTO assignDoctorToPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
+        return patientService.addDoctorToPatient(patientId, doctorId);
+    }
+
+    @DeleteMapping("/{patientId}/doctors/{doctorId}")
+    public PatientDTO removeDoctorFromPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
+        return patientService.removeDoctorFromPatient(patientId, doctorId);
     }
 }

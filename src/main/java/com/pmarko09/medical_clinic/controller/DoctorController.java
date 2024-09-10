@@ -28,21 +28,31 @@ public class DoctorController {
 
     @GetMapping("/{email}")
     public DoctorDTO getDoctor(@PathVariable String email) {
-        return doctorService.getDoctorDto(email);
+        return doctorService.getDoctorDtoByEmail(email);
     }
 
     @DeleteMapping("/{email}")
     public DoctorDTO deleteDoctor(@PathVariable String email) {
-        return doctorService.deleteDoctorDto(email);
+        return doctorService.deleteDoctorDtoByEmail(email);
     }
 
     @PutMapping("/{email}")
     public DoctorDTO editDoctor(@PathVariable String email, @RequestBody Doctor updatedDoctor) {
-        return doctorService.editDoctor(email, updatedDoctor);
+        return doctorService.editDoctorDtoByEmail(email, updatedDoctor);
     }
 
     @PatchMapping("/{email}/password")
     public DoctorDTO changeDoctorPassword(@PathVariable String email, @RequestBody ChangePasswordCommand newPassword) {
         return doctorService.changeDoctorPassword(email, newPassword.getPassword());
+    }
+
+    @PostMapping("/{doctorId}/patients/{patientId}")
+    public DoctorDTO assignPatientToDoctor(@PathVariable Long doctorId, @PathVariable Long patientId) {
+        return doctorService.addPatientToDoctor(doctorId, patientId);
+    }
+
+    @DeleteMapping("/{doctorId}/patients/{patientId}")
+    public DoctorDTO removePatientFromDoctor(@PathVariable Long doctorId, @PathVariable Long patientId) {
+        return doctorService.removePatientFromDoctor(doctorId, patientId);
     }
 }

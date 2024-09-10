@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
-@Table(name = "DOCTORS")
 @Data
+@Table(name = "DOCTORS")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Doctor {
@@ -20,6 +22,20 @@ public class Doctor {
     private String specialization;
     private String email;
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+            name = "DOCTOR_HOSPITAL",
+            joinColumns = @JoinColumn(name = "doctor_id"),
+            inverseJoinColumns = @JoinColumn(name = "hospital_id"))
+    private Set<Hospital> hospitals;
+
+    @ManyToMany
+    @JoinTable(
+            name = "DOCTOR_PATIENT",
+            joinColumns = @JoinColumn(name = "doctor_id"),
+            inverseJoinColumns = @JoinColumn(name = "patient_id"))
+    private Set<Patient> patients;
 
     public static void update(Doctor doctor, Doctor updatedDoctor) {
         doctor.setFirstName(updatedDoctor.getFirstName());
