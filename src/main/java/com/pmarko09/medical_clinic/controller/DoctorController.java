@@ -47,7 +47,7 @@ public class DoctorController {
     }
 
     @PostMapping("/{doctorId}/hospitals/{hospitalId}")
-    public Doctor assignDoctorToHospital(@PathVariable Long doctorId, @PathVariable Long hospitalId) {
+    public DoctorDTO assignDoctorToHospital(@PathVariable Long doctorId, @PathVariable Long hospitalId) {
         return doctorService.addDoctorToHospital(doctorId, hospitalId);
     }
 }

@@ -69,7 +69,7 @@ public class DoctorService {
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
-    public Doctor addDoctorToHospital(Long doctorId, Long hospitalId) {
+    public DoctorDTO addDoctorToHospital(Long doctorId, Long hospitalId) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new DoctorIdNotFound(doctorId));
 
@@ -77,6 +77,6 @@ public class DoctorService {
                 .orElseThrow(() -> new HospitalNotFoundException(hospitalId));
 
         doctor.getHospitals().add(hospital);
-        return doctorRepository.save(doctor);
+        return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 }
