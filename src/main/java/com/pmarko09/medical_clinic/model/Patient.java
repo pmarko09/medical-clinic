@@ -1,15 +1,14 @@
 package com.pmarko09.medical_clinic.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDate;
-import java.util.Set;
 
 @Entity
 @Table(name = "PATIENTS")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient {
@@ -24,9 +23,6 @@ public class Patient {
     private String lastName;
     private String phoneNumber;
     private LocalDate birthday;
-
-    @ManyToMany(mappedBy = "patients")
-    private Set<Doctor> doctors;
 
     public static void update(Patient patient, Patient editedPatient) {
         patient.setFirstName(editedPatient.getFirstName());

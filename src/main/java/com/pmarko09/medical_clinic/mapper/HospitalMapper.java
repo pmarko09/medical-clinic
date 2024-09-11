@@ -1,13 +1,29 @@
 package com.pmarko09.medical_clinic.mapper;
 
+import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.model.Hospital;
 import com.pmarko09.medical_clinic.model.HospitalDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
-public interface HospitalMapper {
+public abstract class HospitalMapper {
 
-    HospitalDTO toDto(Hospital hospital);
+    public abstract HospitalDTO toDto(Hospital hospital);
 
-    Hospital toHospital(HospitalDTO hospitalDTO);
+    public abstract Hospital toHospital(HospitalDTO hospitalDTO);
+
+    @Mapping(source = "doctors", target = "doctorsIds", qualifiedByName = "mapDoctorsToIds")
+    public abstract HospitalDTO toDtoWithDoctors(Hospital hospital);
+
+    @Named("mapDoctorsToIds")
+    protected Set<Long> mapDoctorsToIds(Set<Doctor> doctors) {
+        return doctors.stream()
+                .map(Doctor::getId)
+                .collect(Collectors.toSet());
+    }
 }

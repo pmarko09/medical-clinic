@@ -1,8 +1,11 @@
 package com.pmarko09.medical_clinic.exception;
 
-import com.pmarko09.medical_clinic.exception.doctor.DoctorAlreadyExistException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorAlreadyExistsException;
 import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.exception.doctor.IllegalDoctorDataException;
+import com.pmarko09.medical_clinic.exception.hospital.HospitalAlreadyExistsException;
+import com.pmarko09.medical_clinic.exception.hospital.HospitalNotFoundException;
+import com.pmarko09.medical_clinic.exception.hospital.IllegalHospitalDataException;
 import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
 import com.pmarko09.medical_clinic.exception.patient.PatientAlreadyExistException;
 import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
@@ -42,8 +45,8 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
 
-    @ExceptionHandler(DoctorAlreadyExistException.class)
-    protected ResponseEntity<Object> handleDoctorAlreadyExists(DoctorAlreadyExistException ex, WebRequest webRequest) {
+    @ExceptionHandler(DoctorAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleDoctorAlreadyExists(DoctorAlreadyExistsException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.CONFLICT);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.CONFLICT, webRequest);
     }
@@ -58,5 +61,23 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     protected ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest webRequest) {
         String responseBody = "Unknown error";
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, webRequest);
+    }
+
+    @ExceptionHandler(HospitalAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleHospitalAlreadyExists(HospitalAlreadyExistsException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.CONFLICT);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.CONFLICT, webRequest);
+    }
+
+    @ExceptionHandler(HospitalNotFoundException.class)
+    protected ResponseEntity<Object> handleHospitalNotFound(HospitalNotFoundException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
+    }
+
+    @ExceptionHandler(IllegalHospitalDataException.class)
+    protected ResponseEntity<Object> handleIllegalHospitalData(IllegalHospitalDataException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }
 }

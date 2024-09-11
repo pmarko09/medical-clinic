@@ -28,12 +28,11 @@ public final class PatientValidation {
         }
     }
 
-    public static void patientAlreadyExist(PatientRepository patientRepository ,String email, Patient editedPatient) {
+    public static void patientAlreadyExist(PatientRepository patientRepository, String email, Patient editedPatient) {
         patientRepository.findByEmail(editedPatient.getEmail())
                 .filter(existingPatient -> !existingPatient.getEmail().equals(email))
                 .ifPresent(existingPatient -> {
                     throw new PatientAlreadyExistException(editedPatient.getEmail());
                 });
     }
-
 }

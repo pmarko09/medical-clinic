@@ -2,10 +2,8 @@ package com.pmarko09.medical_clinic.service;
 
 import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
-import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.model.Patient;
 import com.pmarko09.medical_clinic.model.PatientDTO;
-import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import com.pmarko09.medical_clinic.validation.PatientValidation;
@@ -19,7 +17,6 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository patientRepository;
-    private final DoctorRepository doctorRepository;
     private final PatientMapper patientMapper;
 
     public List<PatientDTO> getPatients() {
@@ -65,31 +62,5 @@ public class PatientService {
         patient.setPassword(newPassword);
 
         return patientMapper.toDto(patientRepository.save(patient));
-    }
-
-    public PatientDTO addDoctorToPatient(Long patientId, Long doctorId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
-
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
-
-        patient.getDoctors().add(doctor);
-        patientRepository.save(patient);
-
-        return patientMapper.toDto(patient);
-    }
-
-    public PatientDTO removeDoctorFromPatient(Long patientId, Long doctorId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
-
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
-
-        patient.getDoctors().remove(doctor);
-        patientRepository.save(patient);
-
-        return patientMapper.toDto(patient);
     }
 }

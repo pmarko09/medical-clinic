@@ -17,6 +17,6 @@ public class HospitalDTO {
     private String postalCode;
     private String street;
     private String buildingNumber;
-    private Set<DoctorDTO> doctors;
+    private Set<Long> doctorsIds;
 
 }

@@ -31,13 +31,12 @@ public class HospitalController {
     }
 
     @PutMapping("/{id}")
-    public HospitalDTO updateHospital(@RequestBody Long id, Hospital hospital) {
+    public HospitalDTO updateHospital(@PathVariable Long id, @RequestBody Hospital hospital) {
         return hospitalService.updateHospital(id, hospital);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteHospital(@RequestBody Long id) {
+    public void deleteHospital(@PathVariable Long id) {
         hospitalService.deleteHospital(id);
     }
-
 }

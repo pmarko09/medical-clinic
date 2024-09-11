@@ -1,9 +1,7 @@
 package com.pmarko09.medical_clinic.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -29,13 +27,6 @@ public class Doctor {
             joinColumns = @JoinColumn(name = "doctor_id"),
             inverseJoinColumns = @JoinColumn(name = "hospital_id"))
     private Set<Hospital> hospitals;
-
-    @ManyToMany
-    @JoinTable(
-            name = "DOCTOR_PATIENT",
-            joinColumns = @JoinColumn(name = "doctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "patient_id"))
-    private Set<Patient> patients;
 
     public static void update(Doctor doctor, Doctor updatedDoctor) {
         doctor.setFirstName(updatedDoctor.getFirstName());

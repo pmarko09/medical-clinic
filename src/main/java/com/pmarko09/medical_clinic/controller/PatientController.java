@@ -45,14 +45,4 @@ public class PatientController {
     public PatientDTO changePatientPassword(@PathVariable("email") String email, @RequestBody ChangePasswordCommand newPassword) {
         return patientService.changePassword(email, newPassword.getPassword());
     }
-
-    @PostMapping("/{patientId}/doctors/{doctorId}")
-    public PatientDTO assignDoctorToPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
-        return patientService.addDoctorToPatient(patientId, doctorId);
-    }
-
-    @DeleteMapping("/{patientId}/doctors/{doctorId}")
-    public PatientDTO removeDoctorFromPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
-        return patientService.removeDoctorFromPatient(patientId, doctorId);
-    }
 }

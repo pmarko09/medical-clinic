@@ -1,12 +1,14 @@
 package com.pmarko09.medical_clinic.service;
 
+import com.pmarko09.medical_clinic.exception.doctor.DoctorIdNotFound;
 import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
+import com.pmarko09.medical_clinic.exception.hospital.HospitalNotFoundException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.Doctor;
 import com.pmarko09.medical_clinic.model.DoctorDTO;
-import com.pmarko09.medical_clinic.model.Patient;
+import com.pmarko09.medical_clinic.model.Hospital;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
-import com.pmarko09.medical_clinic.repository.PatientRepository;
+import com.pmarko09.medical_clinic.repository.HospitalRepository;
 import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ import java.util.List;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
-    private final PatientRepository patientRepository;
+    private final HospitalRepository hospitalRepository;
     private final DoctorMapper doctorMapper;
 
     public List<DoctorDTO> getDoctors() {
@@ -67,29 +69,14 @@ public class DoctorService {
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
-    public DoctorDTO addPatientToDoctor(Long doctorId, Long patientId) {
+    public Doctor addDoctorToHospital(Long doctorId, Long hospitalId) {
         Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+                .orElseThrow(() -> new DoctorIdNotFound(doctorId));
 
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new HospitalNotFoundException(hospitalId));
 
-        doctor.getPatients().add(patient);
-        doctorRepository.save(doctor);
-
-        return doctorMapper.toDto(doctor);
-    }
-
-    public DoctorDTO removePatientFromDoctor(Long doctorId, Long patientId) {
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
-
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
-
-        doctor.getPatients().remove(patient);
-        doctorRepository.save(doctor);
-
-        return doctorMapper.toDto(doctor);
+        doctor.getHospitals().add(hospital);
+        return doctorRepository.save(doctor);
     }
 }
