@@ -1,7 +1,7 @@
 package com.pmarko09.medical_clinic.validation;
 
 import com.pmarko09.medical_clinic.exception.hospital.IllegalHospitalDataException;
-import com.pmarko09.medical_clinic.model.Hospital;
+import com.pmarko09.medical_clinic.model.model.Hospital;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

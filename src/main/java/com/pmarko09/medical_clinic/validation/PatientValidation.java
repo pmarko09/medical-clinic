@@ -2,7 +2,7 @@ package com.pmarko09.medical_clinic.validation;
 
 import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
 import com.pmarko09.medical_clinic.exception.patient.PatientAlreadyExistException;
-import com.pmarko09.medical_clinic.model.Patient;
+import com.pmarko09.medical_clinic.model.model.Patient;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

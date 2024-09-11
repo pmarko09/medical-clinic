@@ -1,8 +1,8 @@
 package com.pmarko09.medical_clinic.controller;
 
-import com.pmarko09.medical_clinic.model.ChangePasswordCommand;
-import com.pmarko09.medical_clinic.model.Patient;
-import com.pmarko09.medical_clinic.model.PatientDTO;
+import com.pmarko09.medical_clinic.model.model.ChangePasswordCommand;
+import com.pmarko09.medical_clinic.model.model.Patient;
+import com.pmarko09.medical_clinic.model.DTO.PatientDTO;
 import com.pmarko09.medical_clinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
