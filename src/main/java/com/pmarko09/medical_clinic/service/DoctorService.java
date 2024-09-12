@@ -5,7 +5,7 @@ import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.exception.hospital.HospitalNotFoundException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.model.Doctor;
-import com.pmarko09.medical_clinic.model.DTO.DoctorDTO;
+import com.pmarko09.medical_clinic.model.dto.DoctorDTO;
 import com.pmarko09.medical_clinic.model.model.Hospital;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import com.pmarko09.medical_clinic.repository.HospitalRepository;
@@ -30,26 +30,26 @@ public class DoctorService {
                 .toList();
     }
 
-    public Doctor addDoctor(Doctor doctor) {
+    public DoctorDTO addDoctor(Doctor doctor) {
         DoctorValidation.doctorEmailInUse(doctorRepository, doctor.getEmail());
         DoctorValidation.validateDoctorData(doctor);
-        return doctorRepository.save(doctor);
+        return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
-    public DoctorDTO getDoctorDtoByEmail(String email) {
+    public DoctorDTO getDoctorByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
         return doctorMapper.toDto(doctor);
     }
 
-    public DoctorDTO deleteDoctorDtoByEmail(String email) {
+    public DoctorDTO deleteDoctorByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
         doctorRepository.delete(doctor);
         return doctorMapper.toDto(doctor);
     }
 
-    public DoctorDTO editDoctorDtoByEmail(String email, Doctor editedDoctor) {
+    public DoctorDTO editDoctorByEmail(String email, Doctor editedDoctor) {
         DoctorValidation.doctorAlreadyExists(doctorRepository, email, editedDoctor);
         DoctorValidation.validateDoctorData(editedDoctor);
 

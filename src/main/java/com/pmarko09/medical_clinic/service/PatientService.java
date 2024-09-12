@@ -3,7 +3,7 @@ package com.pmarko09.medical_clinic.service;
 import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
 import com.pmarko09.medical_clinic.model.model.Patient;
-import com.pmarko09.medical_clinic.model.DTO.PatientDTO;
+import com.pmarko09.medical_clinic.model.dto.PatientDTO;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import com.pmarko09.medical_clinic.validation.PatientValidation;

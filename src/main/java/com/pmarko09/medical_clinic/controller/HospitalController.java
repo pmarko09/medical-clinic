@@ -1,7 +1,7 @@
 package com.pmarko09.medical_clinic.controller;
 
 import com.pmarko09.medical_clinic.model.model.Hospital;
-import com.pmarko09.medical_clinic.model.DTO.HospitalDTO;
+import com.pmarko09.medical_clinic.model.dto.HospitalDTO;
 import com.pmarko09.medical_clinic.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

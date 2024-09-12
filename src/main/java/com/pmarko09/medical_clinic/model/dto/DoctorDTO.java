@@ -1,6 +1,7 @@
-package com.pmarko09.medical_clinic.model.DTO;
+package com.pmarko09.medical_clinic.model.dto;
 
 import lombok.*;
+
 import java.util.Set;
 
 @Data
@@ -8,6 +9,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class DoctorDTO {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String specialization;

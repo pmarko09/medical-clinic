@@ -1,4 +1,4 @@
-package com.pmarko09.medical_clinic.model.DTO;
+package com.pmarko09.medical_clinic.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

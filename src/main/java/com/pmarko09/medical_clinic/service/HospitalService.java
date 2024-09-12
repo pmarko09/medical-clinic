@@ -3,7 +3,7 @@ package com.pmarko09.medical_clinic.service;
 import com.pmarko09.medical_clinic.exception.hospital.HospitalNotFoundException;
 import com.pmarko09.medical_clinic.mapper.HospitalMapper;
 import com.pmarko09.medical_clinic.model.model.Hospital;
-import com.pmarko09.medical_clinic.model.DTO.HospitalDTO;
+import com.pmarko09.medical_clinic.model.dto.HospitalDTO;
 import com.pmarko09.medical_clinic.repository.HospitalRepository;
 import com.pmarko09.medical_clinic.validation.HospitalValidation;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +43,8 @@ public class HospitalService {
     }
 
     public void deleteHospital(Long id) {
+        hospitalRepository.findById(id)
+                .orElseThrow(() -> new HospitalNotFoundException(id));
         hospitalRepository.deleteById(id);
     }
 }

@@ -9,7 +9,7 @@ import com.pmarko09.medical_clinic.exception.hospital.IllegalHospitalDataExcepti
 import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
 import com.pmarko09.medical_clinic.exception.patient.PatientAlreadyExistException;
 import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
-import com.pmarko09.medical_clinic.model.DTO.ErrorMessageDTO;
+import com.pmarko09.medical_clinic.model.dto.ErrorMessageDTO;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

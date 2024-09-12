@@ -2,7 +2,7 @@ package com.pmarko09.medical_clinic.controller;
 
 import com.pmarko09.medical_clinic.model.model.ChangePasswordCommand;
 import com.pmarko09.medical_clinic.model.model.Doctor;
-import com.pmarko09.medical_clinic.model.DTO.DoctorDTO;
+import com.pmarko09.medical_clinic.model.dto.DoctorDTO;
 import com.pmarko09.medical_clinic.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,23 +22,23 @@ public class DoctorController {
     }
 
     @PostMapping
-    public Doctor addDoctor(@RequestBody Doctor doctor) {
+    public DoctorDTO addDoctor(@RequestBody Doctor doctor) {
         return doctorService.addDoctor(doctor);
     }
 
     @GetMapping("/{email}")
     public DoctorDTO getDoctor(@PathVariable String email) {
-        return doctorService.getDoctorDtoByEmail(email);
+        return doctorService.getDoctorByEmail(email);
     }
 
     @DeleteMapping("/{email}")
     public DoctorDTO deleteDoctor(@PathVariable String email) {
-        return doctorService.deleteDoctorDtoByEmail(email);
+        return doctorService.deleteDoctorByEmail(email);
     }
 
     @PutMapping("/{email}")
     public DoctorDTO editDoctor(@PathVariable String email, @RequestBody Doctor updatedDoctor) {
-        return doctorService.editDoctorDtoByEmail(email, updatedDoctor);
+        return doctorService.editDoctorByEmail(email, updatedDoctor);
     }
 
     @PatchMapping("/{email}/password")

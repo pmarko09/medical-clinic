@@ -1,7 +1,7 @@
 package com.pmarko09.medical_clinic.mapper;
 
 import com.pmarko09.medical_clinic.model.model.Doctor;
-import com.pmarko09.medical_clinic.model.DTO.DoctorDTO;
+import com.pmarko09.medical_clinic.model.dto.DoctorDTO;
 import com.pmarko09.medical_clinic.model.model.Hospital;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
