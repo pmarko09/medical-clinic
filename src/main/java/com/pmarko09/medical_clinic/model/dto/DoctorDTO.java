@@ -1,20 +1,19 @@
-package com.pmarko09.medical_clinic.model;
+package com.pmarko09.medical_clinic.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class DoctorDTO {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String specialization;
     private String email;
-    private List<String> patients;
+    private Set<Long> hospitalsIds;
 
 }

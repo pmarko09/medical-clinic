@@ -1,9 +1,9 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.PatientNotFoundException;
+import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
-import com.pmarko09.medical_clinic.model.Patient;
-import com.pmarko09.medical_clinic.model.PatientDTO;
+import com.pmarko09.medical_clinic.model.model.Patient;
+import com.pmarko09.medical_clinic.model.dto.PatientDTO;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import com.pmarko09.medical_clinic.validation.PatientValidation;
@@ -25,26 +25,26 @@ public class PatientService {
                 .toList();
     }
 
-    public Patient addPatient(Patient patient) {
+    public Patient addPatientByEmail(Patient patient) {
         PatientValidation.patientEmailInUse(patientRepository, patient.getEmail());
         PatientValidation.validatePatientData(patient);
         return patientRepository.save(patient);
     }
 
-    public PatientDTO getPatientDto(String email) {
+    public PatientDTO getPatientDtoByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
         return patientMapper.toDto(patient);
     }
 
-    public PatientDTO deletePatientDto(String email) {
+    public PatientDTO deletePatientDtoByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
         patientRepository.delete(patient);
         return patientMapper.toDto(patient);
     }
 
-    public PatientDTO editPatient(String email, Patient editedPatient) {
+    public PatientDTO editPatientByEmail(String email, Patient editedPatient) {
         PatientValidation.patientAlreadyExist(patientRepository, email, editedPatient);
         PatientValidation.validatePatientData(editedPatient);
 

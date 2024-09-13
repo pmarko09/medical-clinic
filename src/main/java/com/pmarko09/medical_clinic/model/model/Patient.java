@@ -1,15 +1,14 @@
-package com.pmarko09.medical_clinic.model;
+package com.pmarko09.medical_clinic.model.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Table (name = "PATIENTS")
-@Data
+@Table(name = "PATIENTS")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient {

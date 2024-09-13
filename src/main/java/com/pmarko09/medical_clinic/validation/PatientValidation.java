@@ -1,8 +1,8 @@
 package com.pmarko09.medical_clinic.validation;
 
-import com.pmarko09.medical_clinic.exception.IllegalPatientDataException;
-import com.pmarko09.medical_clinic.exception.PatientAlreadyExistException;
-import com.pmarko09.medical_clinic.model.Patient;
+import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
+import com.pmarko09.medical_clinic.exception.patient.PatientAlreadyExistException;
+import com.pmarko09.medical_clinic.model.model.Patient;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -28,12 +28,11 @@ public final class PatientValidation {
         }
     }
 
-    public static void patientAlreadyExist(PatientRepository patientRepository ,String email, Patient editedPatient) {
+    public static void patientAlreadyExist(PatientRepository patientRepository, String email, Patient editedPatient) {
         patientRepository.findByEmail(editedPatient.getEmail())
                 .filter(existingPatient -> !existingPatient.getEmail().equals(email))
                 .ifPresent(existingPatient -> {
                     throw new PatientAlreadyExistException(editedPatient.getEmail());
                 });
     }
-
 }

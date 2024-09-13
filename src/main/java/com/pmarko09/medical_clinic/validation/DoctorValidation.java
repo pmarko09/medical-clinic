@@ -1,8 +1,8 @@
 package com.pmarko09.medical_clinic.validation;
 
-import com.pmarko09.medical_clinic.exception.DoctorAlreadyExistException;
-import com.pmarko09.medical_clinic.exception.IllegalDoctorDataException;
-import com.pmarko09.medical_clinic.model.Doctor;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorAlreadyExistsException;
+import com.pmarko09.medical_clinic.exception.doctor.IllegalDoctorDataException;
+import com.pmarko09.medical_clinic.model.model.Doctor;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class DoctorValidation {
 
     public static void doctorEmailInUse(DoctorRepository doctorRepository, String email) {
         if (doctorRepository.findByEmail(email).isPresent()) {
-            throw new DoctorAlreadyExistException(email);
+            throw new DoctorAlreadyExistsException(email);
         }
     }
 
@@ -32,7 +32,7 @@ public class DoctorValidation {
         doctorRepository.findByEmail(updatedDoctor.getEmail())
                 .filter(existingDoctor -> !existingDoctor.getEmail().equals(email))
                 .ifPresent(existingDoctor -> {
-                    throw new DoctorAlreadyExistException(updatedDoctor.getEmail());
+                    throw new DoctorAlreadyExistsException(updatedDoctor.getEmail());
                 });
     }
 }
