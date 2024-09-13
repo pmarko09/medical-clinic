@@ -42,7 +42,7 @@ public class Hospital {
         if (id == null) {
             return 0;
         }
-        return id.hashCode();
+        return getClass().hashCode();
     }
 
     @Override

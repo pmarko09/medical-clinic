@@ -31,13 +31,13 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    public PatientDTO getPatientDtoByEmail(String email) {
+    public PatientDTO getPatientByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
         return patientMapper.toDto(patient);
     }
 
-    public PatientDTO deletePatientDtoByEmail(String email) {
+    public PatientDTO deletePatientByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
         patientRepository.delete(patient);

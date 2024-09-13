@@ -47,7 +47,7 @@ public class Doctor {
         if (id == null) {
             return 0;
         }
-        return id.hashCode();
+        return getClass().hashCode();
     }
 
     @Override

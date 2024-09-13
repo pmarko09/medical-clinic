@@ -28,12 +28,12 @@ public class PatientController {
 
     @GetMapping("/{email}")
     public PatientDTO getPatient(@PathVariable String email) {
-        return patientService.getPatientDtoByEmail(email);
+        return patientService.getPatientByEmail(email);
     }
 
     @DeleteMapping("/{email}")
     public PatientDTO deletePatient(@PathVariable String email) {
-        return patientService.deletePatientDtoByEmail(email);
+        return patientService.deletePatientByEmail(email);
     }
 
     @PutMapping("/{email}")
