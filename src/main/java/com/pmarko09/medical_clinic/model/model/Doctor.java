@@ -3,6 +3,7 @@ package com.pmarko09.medical_clinic.model.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,7 +28,7 @@ public class Doctor {
             name = "DOCTOR_HOSPITAL",
             joinColumns = @JoinColumn(name = "doctor_id"),
             inverseJoinColumns = @JoinColumn(name = "hospital_id"))
-    private Set<Hospital> hospitals;
+    private Set<Hospital> hospitals = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
