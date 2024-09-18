@@ -3,6 +3,7 @@ package com.pmarko09.medical_clinic.model.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class Hospital {
     private String buildingNumber;
 
     @ManyToMany(mappedBy = "hospitals")
-    private Set<Doctor> doctors;
+    private Set<Doctor> doctors = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

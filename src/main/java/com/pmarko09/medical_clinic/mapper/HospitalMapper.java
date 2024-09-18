@@ -13,12 +13,10 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public abstract class HospitalMapper {
 
-    public abstract HospitalDTO toDto(Hospital hospital);
-
     public abstract Hospital toHospital(HospitalDTO hospitalDTO);
 
     @Mapping(source = "doctors", target = "doctorsIds", qualifiedByName = "mapDoctorsToIds")
-    public abstract HospitalDTO toDtoWithDoctors(Hospital hospital);
+    public abstract HospitalDTO toDto(Hospital hospital);
 
     @Named("mapDoctorsToIds")
     protected Set<Long> mapDoctorsToIds(Set<Doctor> doctors) {
