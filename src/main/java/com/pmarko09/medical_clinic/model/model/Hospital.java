@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
+@Builder
 @Table(name = "HOSPITALS", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 @AllArgsConstructor
 @NoArgsConstructor

@@ -22,7 +22,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public Patient addPatient(@RequestBody Patient patient) {
+    public PatientDTO addPatient(@RequestBody Patient patient) {
         return patientService.addPatientByEmail(patient);
     }
 

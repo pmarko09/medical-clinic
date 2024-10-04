@@ -25,10 +25,10 @@ public class PatientService {
                 .toList();
     }
 
-    public Patient addPatientByEmail(Patient patient) {
+    public PatientDTO addPatientByEmail(Patient patient) {
         PatientValidation.patientEmailInUse(patientRepository, patient.getEmail());
         PatientValidation.validatePatientData(patient);
-        return patientRepository.save(patient);
+        return patientMapper.toDto(patientRepository.save(patient));
     }
 
     public PatientDTO getPatientByEmail(String email) {
