@@ -5,6 +5,7 @@ import lombok.*;
 import java.util.Set;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class DoctorDTO {
