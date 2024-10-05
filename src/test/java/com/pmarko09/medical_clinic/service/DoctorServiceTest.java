@@ -1,5 +1,6 @@
 package com.pmarko09.medical_clinic.service;
 
+import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.dto.DoctorDTO;
 import com.pmarko09.medical_clinic.model.model.Doctor;
@@ -17,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -89,11 +89,7 @@ public class DoctorServiceTest {
                 .hospitals(new HashSet<>())
                 .build();
 
-        DoctorValidation.doctorEmailInUse(doctorRepository, doctor1.getEmail());
-        DoctorValidation.validateDoctorData(doctor1);
-
-        when(doctorRepository.save(any())).thenReturn(doctor1);
-        doctorMapper.toDto(doctor1);
+        when(doctorRepository.save(doctor1)).thenReturn(doctor1);
 
         //when
         DoctorDTO result = doctorService.addDoctor(doctor1);
@@ -103,61 +99,208 @@ public class DoctorServiceTest {
         assertEquals("W", result.getLastName());
         assertEquals("w@", result.getEmail());
         assertEquals("Q", result.getSpecialization());
-
     }
 
     @Test
     void getDoctorByEmail_EmailCorrect_DoctorDtoReturned() {
-
         //given
         Doctor doctor1 = Doctor.builder()
                 .id(1L)
                 .firstName("Robert")
                 .lastName("W")
                 .email("w@")
-                .specialization("Q")
                 .password("333")
                 .hospitals(new HashSet<>())
                 .build();
 
-        when(doctorRepository.findByEmail("PL@")).thenReturn(Optional.of(doctor1));
+        when(doctorRepository.findByEmail(doctor1.getEmail())).thenReturn(Optional.of(doctor1));
 
         //when
-        DoctorDTO result = doctorService.getDoctorByEmail("PL@");
+        DoctorDTO result = doctorService.getDoctorByEmail("w@");
 
         //then
         assertEquals("Robert", result.getFirstName());
         assertEquals("W", result.getLastName());
         assertEquals("w@", result.getEmail());
-        assertEquals("Q", result.getSpecialization());
+        assertNotNull(result);
+    }
 
+    @Test
+    void getDoctorByEmail_DoctorNotFound_ThrowException() {
+        //given
+        String email = "12@";
+
+        when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        //when then
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
+                doctorService.getDoctorByEmail("12@"));
+        assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
     }
 
     @Test
     void deleteDoctorByEmail_EmailCorrect_DoctorDtoReturned() {
-
         //given
-        String email = "123@";
+        Doctor doctor1 = Doctor.builder()
+                .id(1L)
+                .firstName("Robert")
+                .lastName("W")
+                .email("w@")
+                .hospitals(new HashSet<>())
+                .build();
 
-        Hospital hospital = new Hospital(1L, "Szpital", "Wro", "1111",
-                "Wuwu", "59", new HashSet<>());
-
-        Set<Hospital> hospitals = Set.of(hospital);
-
-        Doctor doctor = new Doctor(1L, "Jan", "L",
-                "E", "J@", "1234", hospitals);
-
-        when(doctorRepository.findByEmail(email)).thenReturn(Optional.of(doctor));
-        doNothing().when(doctorRepository).delete(doctor);
+        when(doctorRepository.findByEmail("w@")).thenReturn(Optional.of(doctor1));
 
         //when
-        DoctorDTO result = doctorService.deleteDoctorByEmail(email);
+        DoctorDTO result = doctorService.deleteDoctorByEmail("w@");
 
         //then
-        assertEquals(doctor.getEmail(), result.getEmail());
-        assertEquals(doctor.getSpecialization(), result.getSpecialization());
-        assertEquals(doctor.getFirstName(), result.getFirstName());
-
+        assertEquals("w@", result.getEmail());
+        assertEquals("W", result.getLastName());
+        assertEquals("Robert", result.getFirstName());
+        assertEquals(1L, result.getId());
+        verify(doctorRepository, times(1)).delete(doctor1);
     }
 
+    @Test
+    void deleteDoctorByEmail_DoctorNotFound_ThrowException() {
+        //given
+        String email = "12@";
+
+        when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        //when then
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
+                doctorService.deleteDoctorByEmail("12@"));
+        assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
+    }
+
+    @Test
+    void editDoctorByEmail_DataCorrect_DoctorDtoReturned() {
+        //given
+        Doctor doctor1 = Doctor.builder()
+                .id(1L)
+                .firstName("Robert")
+                .lastName("W")
+                .email("w@")
+                .hospitals(new HashSet<>())
+                .build();
+        Doctor updated = Doctor.builder()
+                .id(1L)
+                .firstName("Jan")
+                .lastName("X")
+                .email("x@")
+                .hospitals(new HashSet<>())
+                .build();
+
+        when(doctorRepository.findByEmail("w@")).thenReturn(Optional.of(doctor1));
+        when(doctorRepository.save(doctor1)).thenReturn(updated);
+
+        //when
+        DoctorDTO result = doctorService.editDoctorByEmail("w@", doctor1);
+
+        //then
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Jan", result.getFirstName());
+        assertEquals("X", result.getLastName());
+        assertEquals("x@", result.getEmail());
+    }
+
+    @Test
+    void editDoctorByEmail_DoctorNotFound_ThrowException() {
+        //given
+        String email = "12@";
+
+        Doctor doctor1 = Doctor.builder()
+                .id(1L)
+                .firstName("Robert")
+                .lastName("W")
+                .email("w@")
+                .hospitals(new HashSet<>())
+                .build();
+
+        when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        //when then
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
+                doctorService.editDoctorByEmail("12@", doctor1));
+        assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
+    }
+
+    @Test
+    void changeDoctorPassword_DataCorrect_DoctorDtoReturned() {
+        //given
+        Doctor doctor1 = Doctor.builder()
+                .id(1L)
+                .firstName("Robert")
+                .lastName("W")
+                .email("w@")
+                .hospitals(new HashSet<>())
+                .build();
+
+        when(doctorRepository.findByEmail("w@")).thenReturn(Optional.of(doctor1));
+        when(doctorRepository.save(doctor1)).thenReturn(doctor1);
+
+        //when
+        DoctorDTO result = doctorService.changeDoctorPassword("w@", "000");
+
+        //then
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Robert", result.getFirstName());
+        assertEquals("W", result.getLastName());
+    }
+
+    @Test
+    void changeDoctorPassword_DoctorNotFound_ThrowException() {
+        //given
+        String email = "12@";
+
+        Doctor doctor1 = Doctor.builder()
+                .id(1L)
+                .firstName("Robert")
+                .lastName("W")
+                .email("w@")
+                .hospitals(new HashSet<>())
+                .build();
+
+        when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        //when then
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
+                doctorService.changeDoctorPassword("12@", "000"));
+        assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
+    }
+
+    @Test
+    void addDoctorToHospital_DataCorrect_DoctorDtoReturned() {
+        //given
+        Doctor doctor1 = Doctor.builder()
+                .id(1L)
+                .firstName("Robert")
+                .lastName("W")
+                .email("w@")
+                .hospitals(new HashSet<>())
+                .build();
+
+        Hospital hospital = new Hospital();
+        hospital.setId(2L);
+        hospital.setCity("Wro");
+        hospital.setStreet("W");
+        hospital.setBuildingNumber("111");
+
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor1));
+        when(hospitalRepository.findById(2L)).thenReturn(Optional.of(hospital));
+        when(doctorRepository.save(doctor1)).thenReturn(doctor1);
+
+        //when
+        DoctorDTO result = doctorService.addDoctorToHospital(1L, 2L);
+
+        //then
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Robert", result.getFirstName());
+        assertTrue(result.getHospitalsIds().contains(hospital.getId()));
+    }
 }
