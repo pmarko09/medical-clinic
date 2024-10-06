@@ -17,7 +17,7 @@ public class HospitalController {
 
     @GetMapping
     public List<HospitalDTO> getHospitals() {
-        return hospitalService.getHospital();
+        return hospitalService.getHospitals();
     }
 
     @GetMapping("/{id}")
@@ -36,7 +36,7 @@ public class HospitalController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteHospital(@PathVariable Long id) {
-        hospitalService.deleteHospital(id);
+    public HospitalDTO deleteHospital(@PathVariable Long id) {
+        return hospitalService.deleteHospital(id);
     }
 }

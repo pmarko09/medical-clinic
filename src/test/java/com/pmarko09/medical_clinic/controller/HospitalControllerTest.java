@@ -16,8 +16,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.ExpectedCount.times;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -51,7 +52,7 @@ public class HospitalControllerTest {
 
         List<HospitalDTO> hospitalDTOS = List.of(hospitalDTO1, hospitalDTO2);
 
-        when(hospitalService.getHospital()).thenReturn(hospitalDTOS);
+        when(hospitalService.getHospitals()).thenReturn(hospitalDTOS);
 
         //when then
         mockMvc.perform(
@@ -97,7 +98,6 @@ public class HospitalControllerTest {
     void addHospital_DataCorrect_ReturnStatus200() throws Exception {
         //given
         Hospital hospital = new Hospital();
-        hospital.setId(1L);
         hospital.setName("A");
         hospital.setCity("C");
         hospital.setBuildingNumber("99");
@@ -108,7 +108,7 @@ public class HospitalControllerTest {
         hospitalDTO1.setCity("C");
         hospitalDTO1.setBuildingNumber("99");
 
-        when(hospitalService.addHospital(hospital)).thenReturn(hospitalDTO1);
+        when(hospitalService.addHospital(any(Hospital.class))).thenReturn(hospitalDTO1);
 
         //when then
         mockMvc.perform(
@@ -128,7 +128,6 @@ public class HospitalControllerTest {
     void updateHospital_DataCorrect_ReturnStatus200() throws Exception {
         //given
         Hospital hospital = new Hospital();
-        hospital.setId(1L);
         hospital.setName("A");
         hospital.setCity("C");
         hospital.setBuildingNumber("99");
@@ -139,7 +138,7 @@ public class HospitalControllerTest {
         hospitalDTO1.setCity("P");
         hospitalDTO1.setBuildingNumber("999");
 
-        when(hospitalService.updateHospital(1L, hospital)).thenReturn(hospitalDTO1);
+        when(hospitalService.updateHospital(eq(1L), any(Hospital.class))).thenReturn(hospitalDTO1);
 
         //when then
         mockMvc.perform(
@@ -154,18 +153,27 @@ public class HospitalControllerTest {
                 .andExpect(jsonPath("$.city").value("P"))
                 .andExpect(jsonPath("$.buildingNumber").value("999"));
     }
-//
-//    @Test
-//    void deleteHospital_DataCorrect_ReturnStatus200() throws Exception {
-//        //given
-//        Long id = 1L;
-//
-//        //when then
-//        mockMvc.perform(
-//                MockMvcRequestBuilders.delete("hospitals", id)
-//        )
-//                .andDo(print())
-//                .andExpect(MockMvcResultMatchers.status().isNoContent());
-//
-//        verify(del);
+
+    @Test
+    void deleteHospital_DataCorrect_ReturnStatus200() throws Exception {
+        //given
+        HospitalDTO hospitalDTO1 = new HospitalDTO();
+        hospitalDTO1.setId(1L);
+        hospitalDTO1.setName("S");
+        hospitalDTO1.setCity("P");
+        hospitalDTO1.setBuildingNumber("999");
+
+        when(hospitalService.deleteHospital(1L)).thenReturn(hospitalDTO1);
+
+        //when then
+        mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/hospitals/1")
+                )
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("S"))
+                .andExpect(jsonPath("$.city").value("P"))
+                .andExpect(jsonPath("$.buildingNumber").value("999"));
+    }
 }

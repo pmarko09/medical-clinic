@@ -15,11 +15,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.print.Doc;
 import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -77,7 +77,6 @@ public class DoctorControllerTest {
     void addDoctor_DataCorrect_ReturnStatus200() throws Exception {
         //given
         Doctor doctor = Doctor.builder()
-                .id(1L)
                 .firstName("A")
                 .lastName("B")
                 .email("ab@")
@@ -92,7 +91,7 @@ public class DoctorControllerTest {
                 .specialization("Z")
                 .build();
 
-        when(doctorService.addDoctor(doctor)).thenReturn(doctorDTO);
+        when(doctorService.addDoctor(any(Doctor.class))).thenReturn(doctorDTO);
 
         //when then
         mockMvc.perform(
@@ -165,7 +164,6 @@ public class DoctorControllerTest {
     void editDoctor_DataCorrect_ReturnStatus200() throws Exception {
         //given
         Doctor doctor = Doctor.builder()
-                .id(1L)
                 .firstName("C")
                 .lastName("D")
                 .email("cd@")
@@ -180,7 +178,7 @@ public class DoctorControllerTest {
                 .specialization("Z")
                 .build();
 
-        when(doctorService.editDoctorByEmail("cd@", doctor)).thenReturn(doctorDTO);
+        when(doctorService.editDoctorByEmail(eq("cd@"), any(Doctor.class))).thenReturn(doctorDTO);
 
         //when then
         mockMvc.perform(

@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -76,7 +76,6 @@ public class PatientControllerTest {
     void addPatient_DataCorrect_ReturnStatus200() throws Exception {
         //given
         Patient patient = new Patient();
-        patient.setId(1L);
         patient.setFirstName("jan");
         patient.setLastName("Wu");
         patient.setEmail("12@");
@@ -89,7 +88,7 @@ public class PatientControllerTest {
         patientDTO.setEmail("12@");
         patientDTO.setPhoneNumber("997");
 
-        when(patientService.addPatient(patient)).thenReturn(patientDTO);
+        when(patientService.addPatient(any(Patient.class))).thenReturn(patientDTO);
 
         //when then
         mockMvc.perform(
@@ -159,7 +158,6 @@ public class PatientControllerTest {
     void editPatient_DataCorrect_ReturnStatus200() throws Exception {
         //given
         Patient patient = new Patient();
-        patient.setId(1L);
         patient.setFirstName("jan");
         patient.setLastName("Wu");
         patient.setEmail("12@");
@@ -172,7 +170,7 @@ public class PatientControllerTest {
         patientDTO.setEmail("12@");
         patientDTO.setPhoneNumber("997");
 
-        when(patientService.editPatientByEmail("12@", patient)).thenReturn(patientDTO);
+        when(patientService.editPatientByEmail(eq("12@"), any(Patient.class))).thenReturn(patientDTO);
 
         //when then
         mockMvc.perform(
@@ -187,7 +185,7 @@ public class PatientControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Wu"))
                 .andExpect(jsonPath("$.email").value("12@"))
                 .andExpect(jsonPath("$.phoneNumber").value("997"));
-    } //TODO: No value at JSON path "$.id" i tu i przy dodawaniu pacjenta
+    }
 
     @Test
     void changePatientPassword_DataCorrect_ReturnStatus200() throws Exception {
