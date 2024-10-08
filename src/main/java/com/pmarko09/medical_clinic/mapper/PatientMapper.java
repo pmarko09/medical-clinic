@@ -9,5 +9,4 @@ public interface PatientMapper {
 
     PatientDTO toDto(Patient patient);
 
-    Patient toPatient(PatientDTO patientDTO);
 }

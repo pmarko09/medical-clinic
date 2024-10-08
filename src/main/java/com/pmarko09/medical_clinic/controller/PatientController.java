@@ -23,7 +23,7 @@ public class PatientController {
 
     @PostMapping
     public PatientDTO addPatient(@RequestBody Patient patient) {
-        return patientService.addPatientByEmail(patient);
+        return patientService.addPatient(patient);
     }
 
     @GetMapping("/{email}")

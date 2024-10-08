@@ -18,7 +18,7 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final HospitalMapper hospitalMapper;
 
-    public List<HospitalDTO> getHospital() {
+    public List<HospitalDTO> getHospitals() {
         return hospitalRepository.findAll().stream()
                 .map(hospitalMapper::toDto)
                 .toList();
@@ -42,9 +42,10 @@ public class HospitalService {
         return hospitalMapper.toDto(hospitalRepository.save(hospital));
     }
 
-    public void deleteHospital(Long id) {
-        hospitalRepository.findById(id)
+    public HospitalDTO deleteHospital(Long id) {
+        Hospital hospital = hospitalRepository.findById(id)
                 .orElseThrow(() -> new HospitalNotFoundException(id));
-        hospitalRepository.deleteById(id);
+        hospitalRepository.delete(hospital);
+     return hospitalMapper.toDto(hospital);
     }
 }
