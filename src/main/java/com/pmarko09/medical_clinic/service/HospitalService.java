@@ -31,6 +31,7 @@ public class HospitalService {
     }
 
     public HospitalDTO addHospital(Hospital hospital) {
+        HospitalValidation.hospitalNameExists(hospitalRepository, hospital);
         HospitalValidation.validateHospitalData(hospital);
         return hospitalMapper.toDto(hospitalRepository.save(hospital));
     }

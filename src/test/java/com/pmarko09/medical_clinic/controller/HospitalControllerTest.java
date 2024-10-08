@@ -74,13 +74,13 @@ public class HospitalControllerTest {
     @Test
     void getHospital_DataCorrect_ReturnStatus200() throws Exception {
         //given
-        HospitalDTO hospitalDTO1 = new HospitalDTO();
-        hospitalDTO1.setId(1L);
-        hospitalDTO1.setName("A");
-        hospitalDTO1.setCity("W");
-        hospitalDTO1.setBuildingNumber("99");
+        HospitalDTO hospitalDTO = new HospitalDTO();
+        hospitalDTO.setId(1L);
+        hospitalDTO.setName("A");
+        hospitalDTO.setCity("W");
+        hospitalDTO.setBuildingNumber("99");
 
-        when(hospitalService.getHospitalById(1L)).thenReturn(hospitalDTO1);
+        when(hospitalService.getHospitalById(1L)).thenReturn(hospitalDTO);
 
         //when then
         mockMvc.perform(
@@ -102,13 +102,13 @@ public class HospitalControllerTest {
         hospital.setCity("C");
         hospital.setBuildingNumber("99");
 
-        HospitalDTO hospitalDTO1 = new HospitalDTO();
-        hospitalDTO1.setId(1L);
-        hospitalDTO1.setName("A");
-        hospitalDTO1.setCity("C");
-        hospitalDTO1.setBuildingNumber("99");
+        HospitalDTO hospitalDTO = new HospitalDTO();
+        hospitalDTO.setId(1L);
+        hospitalDTO.setName("A");
+        hospitalDTO.setCity("C");
+        hospitalDTO.setBuildingNumber("99");
 
-        when(hospitalService.addHospital(any(Hospital.class))).thenReturn(hospitalDTO1);
+        when(hospitalService.addHospital(any(Hospital.class))).thenReturn(hospitalDTO);
 
         //when then
         mockMvc.perform(
@@ -132,13 +132,13 @@ public class HospitalControllerTest {
         hospital.setCity("C");
         hospital.setBuildingNumber("99");
 
-        HospitalDTO hospitalDTO1 = new HospitalDTO();
-        hospitalDTO1.setId(1L);
-        hospitalDTO1.setName("S");
-        hospitalDTO1.setCity("P");
-        hospitalDTO1.setBuildingNumber("999");
+        HospitalDTO hospitalDTO = new HospitalDTO();
+        hospitalDTO.setId(1L);
+        hospitalDTO.setName("S");
+        hospitalDTO.setCity("P");
+        hospitalDTO.setBuildingNumber("999");
 
-        when(hospitalService.updateHospital(eq(1L), any(Hospital.class))).thenReturn(hospitalDTO1);
+        when(hospitalService.updateHospital(eq(1L), any(Hospital.class))).thenReturn(hospitalDTO);
 
         //when then
         mockMvc.perform(
@@ -157,13 +157,13 @@ public class HospitalControllerTest {
     @Test
     void deleteHospital_DataCorrect_ReturnStatus200() throws Exception {
         //given
-        HospitalDTO hospitalDTO1 = new HospitalDTO();
-        hospitalDTO1.setId(1L);
-        hospitalDTO1.setName("S");
-        hospitalDTO1.setCity("P");
-        hospitalDTO1.setBuildingNumber("999");
+        HospitalDTO hospitalDTO = new HospitalDTO();
+        hospitalDTO.setId(1L);
+        hospitalDTO.setName("S");
+        hospitalDTO.setCity("P");
+        hospitalDTO.setBuildingNumber("999");
 
-        when(hospitalService.deleteHospital(1L)).thenReturn(hospitalDTO1);
+        when(hospitalService.deleteHospital(1L)).thenReturn(hospitalDTO);
 
         //when then
         mockMvc.perform(

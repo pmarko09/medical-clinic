@@ -7,7 +7,6 @@ import com.pmarko09.medical_clinic.model.model.Doctor;
 import com.pmarko09.medical_clinic.model.model.Hospital;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import com.pmarko09.medical_clinic.repository.HospitalRepository;
-import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -16,10 +15,8 @@ import org.mockito.Mockito;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class DoctorServiceTest {
@@ -128,9 +125,7 @@ public class DoctorServiceTest {
     @Test
     void getDoctorByEmail_DoctorNotFound_ThrowException() {
         //given
-        String email = "12@";
-
-        when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(doctorRepository.findByEmail("12@")).thenReturn(Optional.empty());
 
         //when then
         DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
@@ -165,9 +160,7 @@ public class DoctorServiceTest {
     @Test
     void deleteDoctorByEmail_DoctorNotFound_ThrowException() {
         //given
-        String email = "12@";
-
-        when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(doctorRepository.findByEmail("12@")).thenReturn(Optional.empty());
 
         //when then
         DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
@@ -257,14 +250,6 @@ public class DoctorServiceTest {
         //given
         String email = "12@";
 
-        Doctor doctor1 = Doctor.builder()
-                .id(1L)
-                .firstName("Robert")
-                .lastName("W")
-                .email("w@")
-                .hospitals(new HashSet<>())
-                .build();
-
         when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         //when then
@@ -276,7 +261,7 @@ public class DoctorServiceTest {
     @Test
     void addDoctorToHospital_DataCorrect_DoctorDtoReturned() {
         //given
-        Doctor doctor1 = Doctor.builder()
+        Doctor doctor = Doctor.builder()
                 .id(1L)
                 .firstName("Robert")
                 .lastName("W")
@@ -290,9 +275,9 @@ public class DoctorServiceTest {
         hospital.setStreet("W");
         hospital.setBuildingNumber("111");
 
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor1));
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
         when(hospitalRepository.findById(2L)).thenReturn(Optional.of(hospital));
-        when(doctorRepository.save(doctor1)).thenReturn(doctor1);
+        when(doctorRepository.save(doctor)).thenReturn(doctor);
 
         //when
         DoctorDTO result = doctorService.addDoctorToHospital(1L, 2L);
