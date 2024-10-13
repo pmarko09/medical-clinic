@@ -33,9 +33,6 @@ databaseChangeLog:
               - column:
                   name: password
                   type: varchar(255)
-              - column:
-                  name: hospital_id
-                  type: int
   - changeSet:
       id: 2
       author: p.marko
