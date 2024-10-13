@@ -1,0 +1,97 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: DOCTORS
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_doctor_id
+              - column:
+                  name: first_name
+                  type: varchar(30)
+              - column:
+                  name: last_name
+                  type: varchar(30)
+              - column:
+                  name: specialization
+                  type: varchar(225)
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: uk_doctor_email
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: hospital_id
+                  type: int
+  - changeSet:
+      id: 2
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: HOSPITALS
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_hospital_id
+                  name: id
+                  type: int
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: city
+                  type: varchar(255)
+              - column:
+                  name: postal_code
+                  type: varchar(255)
+              - column:
+                  name: street
+                  type: varchar(255)
+              - column:
+                  name: building_number
+                  type: varchar(255)
+  - changeSet:
+      id: 3
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: DOCTOR_HOSPITAL
+            columns:
+              - column:
+                  name: doctor_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hospital_id
+                  type: int
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: doctor_id
+            baseTableName: DOCTOR_HOSPITAL
+            constraintName: fk_doctor_hospital_doctor
+            referencedColumnNames: id
+            referencedTableName: DOCTORS
+        - addForeignKeyConstraint:
+            baseColumnNames: hospital_id
+            baseTableName: DOCTOR_HOSPITAL
+            constraintName: fk_doctor_hospital_hospital
+            referencedColumnNames: id
+            referencedTableName: HOSPITALS

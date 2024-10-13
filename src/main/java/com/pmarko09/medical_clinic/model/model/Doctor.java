@@ -24,7 +24,7 @@ public class Doctor {
     private String email;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "DOCTOR_HOSPITAL",
             joinColumns = @JoinColumn(name = "doctor_id"),

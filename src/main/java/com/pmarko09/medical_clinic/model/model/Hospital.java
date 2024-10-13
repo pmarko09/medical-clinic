@@ -24,7 +24,7 @@ public class Hospital {
     private String street;
     private String buildingNumber;
 
-    @ManyToMany(mappedBy = "hospitals")
+    @ManyToMany(mappedBy = "hospitals", cascade = CascadeType.ALL)
     private Set<Doctor> doctors = new HashSet<>();
 
     @Override
