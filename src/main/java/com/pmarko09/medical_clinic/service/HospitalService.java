@@ -6,6 +6,7 @@ import com.pmarko09.medical_clinic.model.model.Hospital;
 import com.pmarko09.medical_clinic.model.dto.HospitalDTO;
 import com.pmarko09.medical_clinic.repository.HospitalRepository;
 import com.pmarko09.medical_clinic.validation.HospitalValidation;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +31,14 @@ public class HospitalService {
         return hospitalMapper.toDto(hospital);
     }
 
+    @Transactional
     public HospitalDTO addHospital(Hospital hospital) {
         HospitalValidation.hospitalNameExists(hospitalRepository, hospital);
         HospitalValidation.validateHospitalData(hospital);
         return hospitalMapper.toDto(hospitalRepository.save(hospital));
     }
 
+    @Transactional
     public HospitalDTO updateHospital(Long id, Hospital editedHospital) {
         Hospital hospital = hospitalRepository.findById(id)
                 .orElseThrow(() -> new HospitalNotFoundException(id));
@@ -43,6 +46,7 @@ public class HospitalService {
         return hospitalMapper.toDto(hospitalRepository.save(hospital));
     }
 
+    @Transactional
     public HospitalDTO deleteHospital(Long id) {
         Hospital hospital = hospitalRepository.findById(id)
                 .orElseThrow(() -> new HospitalNotFoundException(id));

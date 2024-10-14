@@ -7,6 +7,7 @@ import com.pmarko09.medical_clinic.model.dto.PatientDTO;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import com.pmarko09.medical_clinic.validation.PatientValidation;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class PatientService {
                 .toList();
     }
 
+    @Transactional
     public PatientDTO addPatient(Patient patient) {
         PatientValidation.patientEmailInUse(patientRepository, patient.getEmail());
         PatientValidation.validatePatientData(patient);
@@ -37,6 +39,7 @@ public class PatientService {
         return patientMapper.toDto(patient);
     }
 
+    @Transactional
     public PatientDTO deletePatientByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException(email));
@@ -44,6 +47,7 @@ public class PatientService {
         return patientMapper.toDto(patient);
     }
 
+    @Transactional
     public PatientDTO editPatientByEmail(String email, Patient editedPatient) {
         PatientValidation.patientAlreadyExist(patientRepository, email, editedPatient);
         PatientValidation.validatePatientData(editedPatient);
@@ -54,6 +58,7 @@ public class PatientService {
         return patientMapper.toDto(patientRepository.save(patient));
     }
 
+    @Transactional
     public PatientDTO changePassword(String email, String newPassword) {
         PasswordValidation.validate(newPassword);
 
