@@ -4,6 +4,7 @@ import com.pmarko09.medical_clinic.model.model.Hospital;
 import com.pmarko09.medical_clinic.model.dto.HospitalDTO;
 import com.pmarko09.medical_clinic.service.HospitalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class HospitalController {
     private final HospitalService hospitalService;
 
     @GetMapping
-    public List<HospitalDTO> getHospitals() {
-        return hospitalService.getHospitals();
+    public List<HospitalDTO> getHospitals(Pageable pageable) {
+        return hospitalService.getHospitals(pageable);
     }
 
     @GetMapping("/{id}")

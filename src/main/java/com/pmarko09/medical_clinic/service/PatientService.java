@@ -9,6 +9,7 @@ import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import com.pmarko09.medical_clinic.validation.PatientValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
 
-    public List<PatientDTO> getPatients() {
-        return patientRepository.findAll().stream()
+    public List<PatientDTO> getPatients(Pageable pageable) {
+        return patientRepository.findAllPatients(pageable).stream()
                 .map(patientMapper::toDto)
                 .toList();
     }

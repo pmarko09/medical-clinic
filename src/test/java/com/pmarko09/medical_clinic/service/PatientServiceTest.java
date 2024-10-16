@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,9 @@ public class PatientServiceTest {
     @Test
     void getPatients_DataCorrect_PatientsDtoReturned() {
         //given
+
+        Pageable pageable = PageRequest.of(0, 1);
+
         Patient patient = new Patient();
         patient.setId(1L);
         patient.setFirstName("A");
@@ -40,10 +45,10 @@ public class PatientServiceTest {
         patient.setEmail("AC@");
         patient.setIdCardNo("997");
 
-        when(patientRepository.findAll()).thenReturn(List.of(patient));
+        when(patientRepository.findAllPatients(pageable)).thenReturn(List.of(patient));
 
         //when
-        List<PatientDTO> result = patientService.getPatients();
+        List<PatientDTO> result = patientService.getPatients(pageable);
 
         //then
         assertEquals(1, result.size());
