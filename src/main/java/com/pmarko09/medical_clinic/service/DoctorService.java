@@ -11,6 +11,7 @@ import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import com.pmarko09.medical_clinic.repository.HospitalRepository;
 import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class DoctorService {
                 .toList();
     }
 
+    @Transactional
     public DoctorDTO addDoctor(Doctor doctor) {
         DoctorValidation.doctorEmailInUse(doctorRepository, doctor.getEmail());
         DoctorValidation.validateDoctorData(doctor);
@@ -42,6 +44,7 @@ public class DoctorService {
         return doctorMapper.toDto(doctor);
     }
 
+    @Transactional
     public DoctorDTO deleteDoctorByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException(email));
@@ -49,6 +52,7 @@ public class DoctorService {
         return doctorMapper.toDto(doctor);
     }
 
+    @Transactional
     public DoctorDTO editDoctorByEmail(String email, Doctor editedDoctor) {
         DoctorValidation.doctorAlreadyExists(doctorRepository, email, editedDoctor);
         DoctorValidation.validateDoctorData(editedDoctor);
@@ -59,6 +63,7 @@ public class DoctorService {
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
+    @Transactional
     public DoctorDTO changeDoctorPassword(String email, String newPassword) {
         PasswordValidation.validate(newPassword);
 
@@ -69,6 +74,7 @@ public class DoctorService {
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
+    @Transactional
     public DoctorDTO addDoctorToHospital(Long doctorId, Long hospitalId) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new DoctorIdNotFound(doctorId));
