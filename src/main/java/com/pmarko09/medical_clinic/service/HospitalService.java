@@ -8,6 +8,7 @@ import com.pmarko09.medical_clinic.repository.HospitalRepository;
 import com.pmarko09.medical_clinic.validation.HospitalValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final HospitalMapper hospitalMapper;
 
-    public List<HospitalDTO> getHospitals() {
-        return hospitalRepository.findAll().stream()
+    public List<HospitalDTO> getHospitals(Pageable pageable) {
+        return hospitalRepository.findAllHospitals(pageable).stream()
                 .map(hospitalMapper::toDto)
                 .toList();
     }

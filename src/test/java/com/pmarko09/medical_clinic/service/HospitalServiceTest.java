@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,9 @@ public class HospitalServiceTest {
     @Test
     void getHospitals_DataCorrect_HospitalsDtoReturned() {
         //given
+
+        Pageable pageable = PageRequest.of(0, 1);
+
         Hospital hospital1 = new Hospital();
         hospital1.setId(1L);
         hospital1.setCity("Wro");
@@ -45,10 +50,9 @@ public class HospitalServiceTest {
         hospital2.setBuildingNumber("5");
         hospital2.setStreet("B");
 
-        when(hospitalRepository.findAll()).thenReturn(List.of(hospital1, hospital2));
-
+        when(hospitalRepository.findAllHospitals(pageable)).thenReturn(List.of(hospital1, hospital2));
         //when
-        List<HospitalDTO> result = hospitalService.getHospitals();
+        List<HospitalDTO> result = hospitalService.getHospitals(pageable);
 
         //then
         assertNotNull(result);

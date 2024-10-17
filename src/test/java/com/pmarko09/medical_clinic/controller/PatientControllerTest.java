@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -39,6 +41,9 @@ public class PatientControllerTest {
     @Test
     void getPatients_DataCorrect_ReturnStatus200() throws Exception {
         //given
+
+        Pageable pageable = PageRequest.of(0, 2);
+
         List<PatientDTO> patientDTOS = List.of(
                 PatientDTO.builder()
                         .id(1L)
@@ -54,11 +59,11 @@ public class PatientControllerTest {
                         .build()
         );
 
-        when(patientService.getPatients()).thenReturn(patientDTOS);
+        when(patientService.getPatients(pageable)).thenReturn(patientDTOS);
 
         //when then
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/patients")
+                        MockMvcRequestBuilders.get("/patients?page=0&size=2")
                 ).andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$").isArray())

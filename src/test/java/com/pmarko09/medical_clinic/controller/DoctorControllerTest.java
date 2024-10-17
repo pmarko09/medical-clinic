@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -40,6 +42,9 @@ public class DoctorControllerTest {
     @Test
     void getDoctors_DataCorrect_ReturnStatus200() throws Exception {
         //given
+
+        Pageable pageable = PageRequest.of(0, 2);
+
         DoctorDTO doctorDTO = new DoctorDTO();
         doctorDTO.setId(1L);
         doctorDTO.setFirstName("Jan");
@@ -54,11 +59,11 @@ public class DoctorControllerTest {
 
         List<DoctorDTO> doctors = List.of(doctorDTO, doctorDTO2);
 
-        when(doctorService.getDoctors()).thenReturn(doctors);
+        when(doctorService.getDoctors(pageable)).thenReturn(doctors);
 
         //when then
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/doctors")
+                        MockMvcRequestBuilders.get("/doctors?page=0&size=2")
                 )
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())

@@ -13,6 +13,7 @@ import com.pmarko09.medical_clinic.validation.DoctorValidation;
 import com.pmarko09.medical_clinic.validation.PasswordValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class DoctorService {
     private final HospitalRepository hospitalRepository;
     private final DoctorMapper doctorMapper;
 
-    public List<DoctorDTO> getDoctors() {
-        return doctorRepository.findAll().stream()
+    public List<DoctorDTO> getDoctors(Pageable pageable) {
+        return doctorRepository.findAllDoctors(pageable).stream()
                 .map(doctorMapper::toDto)
                 .toList();
     }

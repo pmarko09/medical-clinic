@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +39,9 @@ public class DoctorServiceTest {
     @Test
     void getDoctors_DataCorrect_DoctorsDtoReturned() {
         //given
+
+        Pageable pageable = PageRequest.of(0, 2);
+
         Doctor doctor1 = Doctor.builder()
                 .id(1L)
                 .email("123")
@@ -57,10 +62,10 @@ public class DoctorServiceTest {
                 .password("5555")
                 .build();
 
-        when(doctorRepository.findAll()).thenReturn(List.of(doctor1, doctor2));
+        when(doctorRepository.findAllDoctors(pageable)).thenReturn(List.of(doctor1, doctor2));
 
         //when
-        List<DoctorDTO> result = doctorService.getDoctors();
+        List<DoctorDTO> result = doctorService.getDoctors(pageable);
 
         //then
         assertEquals(2, result.size());
