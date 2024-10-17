@@ -39,7 +39,6 @@ public class DoctorServiceTest {
     @Test
     void getDoctors_DataCorrect_DoctorsDtoReturned() {
         //given
-
         Pageable pageable = PageRequest.of(0, 2);
 
         Doctor doctor1 = Doctor.builder()

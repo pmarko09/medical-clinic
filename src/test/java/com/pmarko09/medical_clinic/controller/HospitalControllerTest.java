@@ -40,7 +40,6 @@ public class HospitalControllerTest {
     @Test
     void getHospitals_DataCorrect_ReturnStatus200() throws Exception {
         //given
-
         Pageable pageable = PageRequest.of(0, 2);
 
         HospitalDTO hospitalDTO1 = new HospitalDTO();

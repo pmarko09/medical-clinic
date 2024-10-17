@@ -35,7 +35,6 @@ public class HospitalServiceTest {
     @Test
     void getHospitals_DataCorrect_HospitalsDtoReturned() {
         //given
-
         Pageable pageable = PageRequest.of(0, 1);
 
         Hospital hospital1 = new Hospital();

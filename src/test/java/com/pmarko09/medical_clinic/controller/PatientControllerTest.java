@@ -41,7 +41,6 @@ public class PatientControllerTest {
     @Test
     void getPatients_DataCorrect_ReturnStatus200() throws Exception {
         //given
-
         Pageable pageable = PageRequest.of(0, 2);
 
         List<PatientDTO> patientDTOS = List.of(

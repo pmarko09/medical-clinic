@@ -35,7 +35,6 @@ public class PatientServiceTest {
     @Test
     void getPatients_DataCorrect_PatientsDtoReturned() {
         //given
-
         Pageable pageable = PageRequest.of(0, 1);
 
         Patient patient = new Patient();
