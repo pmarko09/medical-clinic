@@ -16,5 +16,6 @@ public class DoctorDTO {
     private String specialization;
     private String email;
     private Set<Long> hospitalsIds;
+    private Set<Long> appointmentIds;
 
 }

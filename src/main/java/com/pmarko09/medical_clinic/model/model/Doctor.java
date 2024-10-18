@@ -31,6 +31,10 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "hospital_id"))
     private Set<Hospital> hospitals = new HashSet<>();
 
+    @OneToMany(mappedBy = "doctor")
+    @JoinColumn(name = "appointment_id")
+    private Set<Appointment> appointments = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
