@@ -1,6 +1,7 @@
 package com.pmarko09.medical_clinic.validation;
 
 import com.pmarko09.medical_clinic.exception.doctor.DoctorAlreadyExistsException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorIdNotFound;
 import com.pmarko09.medical_clinic.exception.doctor.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.model.model.Doctor;
 import com.pmarko09.medical_clinic.repository.DoctorRepository;
@@ -34,5 +35,10 @@ public class DoctorValidation {
                 .ifPresent(existingDoctor -> {
                     throw new DoctorAlreadyExistsException(updatedDoctor.getEmail());
                 });
+    }
+
+    public static Doctor doctorExists(DoctorRepository doctorRepository, Long doctorId) {
+        return doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new DoctorIdNotFound(doctorId));
     }
 }

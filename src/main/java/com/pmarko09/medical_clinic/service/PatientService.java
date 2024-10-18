@@ -1,6 +1,6 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
+import com.pmarko09.medical_clinic.exception.patient.PatientEmailNotFoundException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
 import com.pmarko09.medical_clinic.model.model.Patient;
 import com.pmarko09.medical_clinic.model.dto.PatientDTO;
@@ -36,14 +36,14 @@ public class PatientService {
 
     public PatientDTO getPatientByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new PatientNotFoundException(email));
+                .orElseThrow(() -> new PatientEmailNotFoundException(email));
         return patientMapper.toDto(patient);
     }
 
     @Transactional
     public PatientDTO deletePatientByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new PatientNotFoundException(email));
+                .orElseThrow(() -> new PatientEmailNotFoundException(email));
         patientRepository.delete(patient);
         return patientMapper.toDto(patient);
     }
@@ -54,7 +54,7 @@ public class PatientService {
         PatientValidation.validatePatientData(editedPatient);
 
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new PatientNotFoundException(email));
+                .orElseThrow(() -> new PatientEmailNotFoundException(email));
         Patient.update(patient, editedPatient);
         return patientMapper.toDto(patientRepository.save(patient));
     }
@@ -64,7 +64,7 @@ public class PatientService {
         PasswordValidation.validate(newPassword);
 
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new PatientNotFoundException(email));
+                .orElseThrow(() -> new PatientEmailNotFoundException(email));
         patient.setPassword(newPassword);
 
         return patientMapper.toDto(patientRepository.save(patient));

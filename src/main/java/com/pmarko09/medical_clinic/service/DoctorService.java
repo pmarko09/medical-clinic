@@ -1,7 +1,7 @@
 package com.pmarko09.medical_clinic.service;
 
 import com.pmarko09.medical_clinic.exception.doctor.DoctorIdNotFound;
-import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorEmailNotFoundException;
 import com.pmarko09.medical_clinic.exception.hospital.HospitalNotFoundException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.model.Doctor;
@@ -41,14 +41,14 @@ public class DoctorService {
 
     public DoctorDTO getDoctorByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
-                .orElseThrow(() -> new DoctorNotFoundException(email));
+                .orElseThrow(() -> new DoctorEmailNotFoundException(email));
         return doctorMapper.toDto(doctor);
     }
 
     @Transactional
     public DoctorDTO deleteDoctorByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
-                .orElseThrow(() -> new DoctorNotFoundException(email));
+                .orElseThrow(() -> new DoctorEmailNotFoundException(email));
         doctorRepository.delete(doctor);
         return doctorMapper.toDto(doctor);
     }
@@ -59,7 +59,7 @@ public class DoctorService {
         DoctorValidation.validateDoctorData(editedDoctor);
 
         Doctor doctor = doctorRepository.findByEmail(email)
-                .orElseThrow(() -> new DoctorNotFoundException(email));
+                .orElseThrow(() -> new DoctorEmailNotFoundException(email));
         Doctor.update(doctor, editedDoctor);
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
@@ -69,7 +69,7 @@ public class DoctorService {
         PasswordValidation.validate(newPassword);
 
         Doctor doctor = doctorRepository.findByEmail(email)
-                .orElseThrow(() -> new DoctorNotFoundException(email));
+                .orElseThrow(() -> new DoctorEmailNotFoundException(email));
         doctor.setPassword(newPassword);
 
         return doctorMapper.toDto(doctorRepository.save(doctor));

@@ -1,6 +1,6 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
+import com.pmarko09.medical_clinic.exception.patient.PatientEmailNotFoundException;
 import com.pmarko09.medical_clinic.mapper.PatientMapper;
 import com.pmarko09.medical_clinic.model.dto.PatientDTO;
 import com.pmarko09.medical_clinic.model.model.Patient;
@@ -107,7 +107,7 @@ public class PatientServiceTest {
         when(patientRepository.findByEmail("A@")).thenReturn(Optional.empty());
 
         //when then
-        PatientNotFoundException aThrows = assertThrows(PatientNotFoundException.class, () ->
+        PatientEmailNotFoundException aThrows = assertThrows(PatientEmailNotFoundException.class, () ->
                 patientService.getPatientByEmail("A@"));
         assertEquals(aThrows.getMessage(), "Patient with email A@ not found.");
     }
@@ -141,7 +141,7 @@ public class PatientServiceTest {
         when(patientRepository.findByEmail("A@")).thenReturn(Optional.empty());
 
         //when then
-        PatientNotFoundException aThrows = assertThrows(PatientNotFoundException.class, () ->
+        PatientEmailNotFoundException aThrows = assertThrows(PatientEmailNotFoundException.class, () ->
                 patientService.deletePatientByEmail("A@"));
         assertEquals(aThrows.getMessage(), "Patient with email A@ not found.");
     }
@@ -191,7 +191,7 @@ public class PatientServiceTest {
         when(patientRepository.findByEmail("A@")).thenReturn(Optional.empty());
 
         //when then
-        PatientNotFoundException aThrows = assertThrows(PatientNotFoundException.class, () ->
+        PatientEmailNotFoundException aThrows = assertThrows(PatientEmailNotFoundException.class, () ->
                 patientService.editPatientByEmail("A@", patient));
         assertEquals(aThrows.getMessage(), "Patient with email A@ not found.");
     }
@@ -228,7 +228,7 @@ public class PatientServiceTest {
         when(patientRepository.findByEmail("A@")).thenReturn(Optional.empty());
 
         //when then
-        PatientNotFoundException aThrows = assertThrows(PatientNotFoundException.class, () ->
+        PatientEmailNotFoundException aThrows = assertThrows(PatientEmailNotFoundException.class, () ->
                 patientService.changePassword("A@", "1234"));
         assertEquals(aThrows.getMessage(), "Patient with email A@ not found.");
     }
