@@ -2,6 +2,8 @@ package com.pmarko09.medical_clinic.controller;
 
 import com.pmarko09.medical_clinic.model.dto.AppointmentDTO;
 import com.pmarko09.medical_clinic.model.dto.CreateAppointmentDTO;
+import com.pmarko09.medical_clinic.model.dto.PatientDTO;
+import com.pmarko09.medical_clinic.model.dto.PatientIdDTO;
 import com.pmarko09.medical_clinic.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +23,18 @@ public class AppointmentController {
         return appointmentService.getAllAppointments(pageable);
     }
 
-    @GetMapping("/patient/{patientId}")
-    public List<AppointmentDTO> getAllPatientAppointments(@PathVariable Long patientId, Pageable pageable) {
+    @GetMapping("/patient")
+    public List<AppointmentDTO> getAllPatientAppointments(@RequestParam Long patientId, Pageable pageable) {
         return appointmentService.getAllPatientAppointments(pageable, patientId);
     }
 
-    @PostMapping()
+    @PostMapping
     public AppointmentDTO createAppointment(@RequestBody CreateAppointmentDTO createAppDTO) {
         return appointmentService.scheduleAppointment(createAppDTO);
     }
 
-    @PatchMapping("/visit/{appId}/patient/{patientId}")
-    public AppointmentDTO registerPatientToAppointment(@PathVariable Long appId, @PathVariable Long patientId) {
-        return appointmentService.registerPatientForAppointment(appId, patientId);
+    @PatchMapping("/{appId}")
+    public AppointmentDTO registerPatientToAppointment(@PathVariable Long appId, @RequestBody PatientIdDTO patientIdDTO) {
+        return appointmentService.registerPatientForAppointment(appId, patientIdDTO.getId());
     }
 }

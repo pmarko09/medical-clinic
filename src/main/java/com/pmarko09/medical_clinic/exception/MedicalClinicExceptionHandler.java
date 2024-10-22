@@ -51,6 +51,12 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
 
+    @ExceptionHandler(PatientHasBookedAppointmentException.class)
+    protected ResponseEntity<Object> handlePatientAlreadyHasThisAppointment(PatientHasBookedAppointmentException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.CONFLICT);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.CONFLICT, webRequest);
+    }
+
     @ExceptionHandler(DoctorNotFoundException.class)
     protected ResponseEntity<Object> handleDoctorNotFound(DoctorNotFoundException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
@@ -64,7 +70,7 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler(DoctorIdNotFound.class)
-    protected ResponseEntity<Object> handleDoctorAlreadyExists(DoctorIdNotFound ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleDoctorIdNotFound(DoctorIdNotFound ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
@@ -100,31 +106,31 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler(AppointmentInThePastException.class)
-    protected ResponseEntity<Object> handleAppInThePast(AppointmentInThePastException ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleAppointmentInThePast(AppointmentInThePastException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }
 
     @ExceptionHandler(AppointmentNotAvailableException.class)
-    protected ResponseEntity<Object> handleAppNotAvailable(AppointmentNotAvailableException ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleAppointmentNotAvailable(AppointmentNotAvailableException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }
 
     @ExceptionHandler(AppointmentNotFoundException.class)
-    protected ResponseEntity<Object> handleAppNotFound(AppointmentNotFoundException ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleAppointmentNotFound(AppointmentNotFoundException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
 
     @ExceptionHandler(AppointmentTimeErrorException.class)
-    protected ResponseEntity<Object> handleAppTimeError(AppointmentTimeErrorException ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleAppointmentTimeError(AppointmentTimeErrorException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }
 
     @ExceptionHandler(AppointmentFullQuarterException.class)
-    protected ResponseEntity<Object> handleAppFullQuarter(AppointmentFullQuarterException ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleAppointmentFullQuarter(AppointmentFullQuarterException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }

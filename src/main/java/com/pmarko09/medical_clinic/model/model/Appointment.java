@@ -16,8 +16,8 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime appStartTime;
-    private LocalDateTime appFinishTime;
+    private LocalDateTime appointmentStartTime;
+    private LocalDateTime appointmentFinishTime;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
@@ -52,8 +52,8 @@ public class Appointment {
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
-                ", appStartTime=" + appStartTime +
-                ", appEndTime=" + appFinishTime +
+                ", appStartTime=" + appointmentStartTime +
+                ", appEndTime=" + appointmentFinishTime +
                 ", doctor=" + (doctor != null ? doctor.getId() : "no doctor") +
                 ", patient=" + (patient != null ? patient.getId() : " no patient") +
                 '}';

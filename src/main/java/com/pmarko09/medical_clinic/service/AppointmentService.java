@@ -54,8 +54,8 @@ public class AppointmentService {
         AppointmentValidation.appOverlappingForDoctor(appointmentRepository, createAppDTO);
 
         Appointment newAppointment = new Appointment();
-        newAppointment.setAppStartTime(createAppDTO.getStartApp());
-        newAppointment.setAppFinishTime(createAppDTO.getEndApp());
+        newAppointment.setAppointmentStartTime(createAppDTO.getStartApp());
+        newAppointment.setAppointmentFinishTime(createAppDTO.getEndApp());
         newAppointment.setDoctor(doctor);
         return appointmentMapper.toDto(appointmentRepository.save(newAppointment));
     }
@@ -68,8 +68,9 @@ public class AppointmentService {
         Appointment appointment = appointmentRepository.findById(appId)
                 .orElseThrow(() -> new AppointmentNotFoundException(appId));
 
+        AppointmentValidation.patientHasThisAppointmentAlready(appointment, patient);
         AppointmentValidation.appointmentAvailable(appointment);
-        AppointmentValidation.appOverLappingForPatient(appointmentRepository, patientId, appointment.getAppStartTime(), appointment.getAppFinishTime());
+        AppointmentValidation.appOverLappingForPatient(appointmentRepository, patientId, appointment.getAppointmentStartTime(), appointment.getAppointmentFinishTime());
         appointment.setPatient(patient);
         return appointmentMapper.toDto(appointmentRepository.save(appointment));
     }
