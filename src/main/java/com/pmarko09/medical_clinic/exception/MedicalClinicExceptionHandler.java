@@ -1,14 +1,14 @@
 package com.pmarko09.medical_clinic.exception;
 
+import com.pmarko09.medical_clinic.exception.appointment.*;
 import com.pmarko09.medical_clinic.exception.doctor.DoctorAlreadyExistsException;
-import com.pmarko09.medical_clinic.exception.doctor.DoctorEmailNotFoundException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorIdNotFound;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.exception.doctor.IllegalDoctorDataException;
 import com.pmarko09.medical_clinic.exception.hospital.HospitalAlreadyExistsException;
 import com.pmarko09.medical_clinic.exception.hospital.HospitalNotFoundException;
 import com.pmarko09.medical_clinic.exception.hospital.IllegalHospitalDataException;
-import com.pmarko09.medical_clinic.exception.patient.IllegalPatientDataException;
-import com.pmarko09.medical_clinic.exception.patient.PatientAlreadyExistException;
-import com.pmarko09.medical_clinic.exception.patient.PatientEmailNotFoundException;
+import com.pmarko09.medical_clinic.exception.patient.*;
 import com.pmarko09.medical_clinic.model.dto.ErrorMessageDTO;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,7 +22,13 @@ import java.time.LocalDateTime;
 public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PatientEmailNotFoundException.class)
-    protected ResponseEntity<Object> handlePatientNotFound(PatientEmailNotFoundException ex, WebRequest webRequest) {
+    protected ResponseEntity<Object> handlePatientEmailNotFound(PatientEmailNotFoundException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
+    }
+
+    @ExceptionHandler(PatientNotFoundException.class)
+    protected ResponseEntity<Object> handlePatientNotFound(PatientNotFoundException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
@@ -39,8 +45,14 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }
 
-    @ExceptionHandler(DoctorEmailNotFoundException.class)
-    protected ResponseEntity<Object> handleDoctorNotFound(DoctorEmailNotFoundException ex, WebRequest webRequest) {
+    @ExceptionHandler(PatientNoAppointmentException.class)
+    protected ResponseEntity<Object> handlePatientNoAppointmentFound(PatientNoAppointmentException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
+    }
+
+    @ExceptionHandler(DoctorNotFoundException.class)
+    protected ResponseEntity<Object> handleDoctorNotFound(DoctorNotFoundException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
@@ -49,6 +61,12 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     protected ResponseEntity<Object> handleDoctorAlreadyExists(DoctorAlreadyExistsException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.CONFLICT);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.CONFLICT, webRequest);
+    }
+
+    @ExceptionHandler(DoctorIdNotFound.class)
+    protected ResponseEntity<Object> handleDoctorAlreadyExists(DoctorIdNotFound ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
 
     @ExceptionHandler(IllegalDoctorDataException.class)
@@ -77,6 +95,36 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
 
     @ExceptionHandler(IllegalHospitalDataException.class)
     protected ResponseEntity<Object> handleIllegalHospitalData(IllegalHospitalDataException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
+    }
+
+    @ExceptionHandler(AppointmentInThePastException.class)
+    protected ResponseEntity<Object> handleAppInThePast(AppointmentInThePastException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
+    }
+
+    @ExceptionHandler(AppointmentNotAvailableException.class)
+    protected ResponseEntity<Object> handleAppNotAvailable(AppointmentNotAvailableException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
+    }
+
+    @ExceptionHandler(AppointmentNotFoundException.class)
+    protected ResponseEntity<Object> handleAppNotFound(AppointmentNotFoundException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
+    }
+
+    @ExceptionHandler(AppointmentTimeErrorException.class)
+    protected ResponseEntity<Object> handleAppTimeError(AppointmentTimeErrorException ex, WebRequest webRequest) {
+        ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
+        return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
+    }
+
+    @ExceptionHandler(AppointmentFullQuarterException.class)
+    protected ResponseEntity<Object> handleAppFullQuarter(AppointmentFullQuarterException ex, WebRequest webRequest) {
         ErrorMessageDTO bodyResponse = new ErrorMessageDTO(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
         return handleExceptionInternal(ex, bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }

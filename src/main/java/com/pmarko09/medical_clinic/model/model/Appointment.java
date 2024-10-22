@@ -54,8 +54,8 @@ public class Appointment {
                 "id=" + id +
                 ", appStartTime=" + appStartTime +
                 ", appEndTime=" + appFinishTime +
-                ", doctor=" + doctor.getId() +
-                ", patient=" + patient.getId() +
+                ", doctor=" + (doctor != null ? doctor.getId() : "no doctor") +
+                ", patient=" + (patient != null ? patient.getId() : " no patient") +
                 '}';
     }
 }

@@ -26,8 +26,7 @@ public class Patient {
     private String phoneNumber;
     private LocalDate birthday;
 
-    @OneToMany(mappedBy = "patient")
-    @JoinColumn (name = "appointment_id")
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
     public static void update(Patient patient, Patient editedPatient) {

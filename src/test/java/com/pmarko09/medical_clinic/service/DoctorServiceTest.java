@@ -1,6 +1,6 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.doctor.DoctorEmailNotFoundException;
+import com.pmarko09.medical_clinic.exception.doctor.DoctorNotFoundException;
 import com.pmarko09.medical_clinic.mapper.DoctorMapper;
 import com.pmarko09.medical_clinic.model.dto.DoctorDTO;
 import com.pmarko09.medical_clinic.model.model.Doctor;
@@ -132,7 +132,7 @@ public class DoctorServiceTest {
         when(doctorRepository.findByEmail("12@")).thenReturn(Optional.empty());
 
         //when then
-        DoctorEmailNotFoundException aThrows = assertThrows(DoctorEmailNotFoundException.class, () ->
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
                 doctorService.getDoctorByEmail("12@"));
         assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
     }
@@ -167,7 +167,7 @@ public class DoctorServiceTest {
         when(doctorRepository.findByEmail("12@")).thenReturn(Optional.empty());
 
         //when then
-        DoctorEmailNotFoundException aThrows = assertThrows(DoctorEmailNotFoundException.class, () ->
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
                 doctorService.deleteDoctorByEmail("12@"));
         assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
     }
@@ -220,7 +220,7 @@ public class DoctorServiceTest {
         when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         //when then
-        DoctorEmailNotFoundException aThrows = assertThrows(DoctorEmailNotFoundException.class, () ->
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
                 doctorService.editDoctorByEmail("12@", doctor1));
         assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
     }
@@ -257,7 +257,7 @@ public class DoctorServiceTest {
         when(doctorRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         //when then
-        DoctorEmailNotFoundException aThrows = assertThrows(DoctorEmailNotFoundException.class, () ->
+        DoctorNotFoundException aThrows = assertThrows(DoctorNotFoundException.class, () ->
                 doctorService.changeDoctorPassword("12@", "000"));
         assertEquals(aThrows.getMessage(), "Doctor with given email 12@ not found.");
     }

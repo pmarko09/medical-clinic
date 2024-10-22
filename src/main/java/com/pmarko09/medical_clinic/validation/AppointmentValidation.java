@@ -2,7 +2,9 @@ package com.pmarko09.medical_clinic.validation;
 
 import com.pmarko09.medical_clinic.exception.appointment.AppointmentInThePastException;
 import com.pmarko09.medical_clinic.exception.appointment.AppointmentNotAvailableException;
-import com.pmarko09.medical_clinic.exception.appointment.AppointmentWrongTimeException;
+import com.pmarko09.medical_clinic.exception.appointment.AppointmentFullQuarterException;
+import com.pmarko09.medical_clinic.exception.appointment.AppointmentTimeErrorException;
+import com.pmarko09.medical_clinic.model.dto.CreateAppointmentDTO;
 import com.pmarko09.medical_clinic.model.model.Appointment;
 import com.pmarko09.medical_clinic.repository.AppointmentRepository;
 import lombok.AccessLevel;
@@ -14,24 +16,33 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AppointmentValidation {
 
-
     public static void appTimeValidation(LocalDateTime appointmentTime) {
         if (appointmentTime.isBefore(LocalDateTime.now())) {
             throw new AppointmentInThePastException();
         }
         if (appointmentTime.getMinute() % 15 != 0) {
-            throw new AppointmentWrongTimeException(appointmentTime);
+            throw new AppointmentFullQuarterException(appointmentTime);
         }
     }
 
-    public static Appointment appointmentAvailable(AppointmentRepository appRepo, LocalDateTime AppStartTime, LocalDateTime AppFinishTime) {
-        List<Appointment> appointments = appRepo.findAll();
+    public static void appointmentAvailable(Appointment appointment) {
+        if (appointment.getPatient() != null) {
+            throw new AppointmentNotAvailableException();
+        }
+    }
 
-        return appointments.stream()
-                .filter(appointment -> appointment.getAppStartTime().equals(AppStartTime)
-                        && appointment.getAppFinishTime().equals(AppFinishTime)
-                        && appointment.getPatient() == null)
-                .findFirst()
-                .orElseThrow(AppointmentNotAvailableException::new);
+    public static void appOverlappingForDoctor(AppointmentRepository appRepo, CreateAppointmentDTO createAppDTO) {
+        List<Appointment> overlappingAppointmentsForDoctor = appRepo.findOverlappingAppointmentsForDoctor(createAppDTO.getDoctorId(),
+                createAppDTO.getStartApp(), createAppDTO.getEndApp());
+        if (!overlappingAppointmentsForDoctor.isEmpty()) {
+            throw new AppointmentTimeErrorException();
+        }
+    }
+
+    public static void appOverLappingForPatient(AppointmentRepository appRepo, Long patientId, LocalDateTime appStart, LocalDateTime appFinish) {
+        List<Appointment> overlappingAppointmentsForPatient = appRepo.findOverlappingAppointmentsForPatient(patientId, appStart, appFinish);
+        if (!overlappingAppointmentsForPatient.isEmpty()) {
+            throw new AppointmentTimeErrorException();
+        }
     }
 }

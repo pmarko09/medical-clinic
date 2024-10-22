@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -18,8 +18,9 @@ public interface PatientMapper {
 
     @Named("mapAppointmentsToAppointmentsIds")
     default Set<Long> mapAppointmentsToAppointmentsIds(Set<Appointment> appointments) {
-        return appointments != null ? appointments.stream()
+        return Optional.ofNullable(appointments)
+                .orElse(Collections.emptySet()).stream()
                 .map(Appointment::getId)
-                .collect(Collectors.toSet()) : null;
+                .collect(Collectors.toSet());
     }
 }

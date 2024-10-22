@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,15 +22,17 @@ public abstract class DoctorMapper {
 
     @Named("mapHospitalsToIds")
     protected Set<Long> mapHospitalsToIds(Set<Hospital> hospitals) {
-        return hospitals != null ? hospitals.stream()
+        return Optional.ofNullable(hospitals)
+                .orElse(Collections.emptySet()).stream()
                 .map(Hospital::getId)
-                .collect(Collectors.toSet()) : null;
+                .collect(Collectors.toSet());
     }
 
     @Named("mapAppointmentsToIds")
     protected Set<Long> mapAppointmentsToIds(Set<Appointment> appointments) {
-        return appointments != null ? appointments.stream()
+        return Optional.ofNullable(appointments)
+                .orElse(Collections.emptySet()).stream()
                 .map(Appointment::getId)
-                .collect(Collectors.toSet()) : null;
+                .collect(Collectors.toSet());
     }
 }

@@ -1,9 +1,10 @@
 package com.pmarko09.medical_clinic.service;
 
-import com.pmarko09.medical_clinic.exception.appointment.AppointmentTimeErrorException;
-import com.pmarko09.medical_clinic.exception.patient.PatientNotFound;
+import com.pmarko09.medical_clinic.exception.appointment.AppointmentNotFoundException;
+import com.pmarko09.medical_clinic.exception.patient.PatientNotFoundException;
 import com.pmarko09.medical_clinic.mapper.AppointmentMapper;
 import com.pmarko09.medical_clinic.model.dto.AppointmentDTO;
+import com.pmarko09.medical_clinic.model.dto.CreateAppointmentDTO;
 import com.pmarko09.medical_clinic.model.model.Appointment;
 import com.pmarko09.medical_clinic.model.model.Doctor;
 import com.pmarko09.medical_clinic.model.model.Patient;
@@ -18,9 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -31,15 +30,15 @@ public class AppointmentService {
     private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
 
-//    public List<AppointmentDTO> getAllAppointments(Pageable pageable) {
-//        return appointmentRepository.findAllApp(pageable).stream()
-//                .map(appointmentMapper::toDto)
-//                .toList();
-//    }
+    public List<AppointmentDTO> getAllAppointments(Pageable pageable) {
+        return appointmentRepository.findAllApp(pageable).stream()
+                .map(appointmentMapper::toDto)
+                .toList();
+    }
 
     public List<AppointmentDTO> getAllPatientAppointments(Pageable pageable, Long patientId) {
-
-        PatientValidation.patientExists(patientRepository, patientId);
+        Patient patient = PatientValidation.patientExists(patientRepository, patientId);
+        PatientValidation.patientAppointmentsCheck(patient);
 
         return appointmentRepository.findAllApp(pageable).stream()
                 .filter(appointment -> appointment.getPatient().getId().equals(patientId))
@@ -48,45 +47,31 @@ public class AppointmentService {
     }
 
     @Transactional
-    public AppointmentDTO scheduleAppointment(Long doctorId, LocalDateTime appStartTime, LocalDateTime appEndTime) {
+    public AppointmentDTO scheduleAppointment(CreateAppointmentDTO createAppDTO) {
+        Doctor doctor = DoctorValidation.doctorExists(doctorRepository, createAppDTO.getDoctorId());
 
-        Doctor doctor = DoctorValidation.doctorExists(doctorRepository, doctorId);
-
-        AppointmentValidation.appTimeValidation(appStartTime);
-
-        Set<Appointment> appointments = doctor.getAppointments();
-
-        for (Appointment appointment : appointments) {
-            if (isTimeError(appStartTime, appEndTime, appointment.getAppStartTime(), appointment.getAppFinishTime())) {
-                throw new AppointmentTimeErrorException();
-            }
-        }
+        AppointmentValidation.appTimeValidation(createAppDTO.getStartApp());
+        AppointmentValidation.appOverlappingForDoctor(appointmentRepository, createAppDTO);
 
         Appointment newAppointment = new Appointment();
-        newAppointment.setAppStartTime(appStartTime);
-        newAppointment.setAppFinishTime(appEndTime);
+        newAppointment.setAppStartTime(createAppDTO.getStartApp());
+        newAppointment.setAppFinishTime(createAppDTO.getEndApp());
         newAppointment.setDoctor(doctor);
-
         return appointmentMapper.toDto(appointmentRepository.save(newAppointment));
     }
 
-    private boolean isTimeError(LocalDateTime newStartTime, LocalDateTime newEndTime,
-                                LocalDateTime existingStartTime, LocalDateTime existingEndTime) {
-
-        return (newStartTime.isBefore(existingEndTime) && newEndTime.isAfter(existingStartTime));
-    }
-
     @Transactional
-    public AppointmentDTO registerPatientToAppointment(Long patientId, LocalDateTime requestedAppStartTime, LocalDateTime requestedAppFinishTime) {
-
+    public AppointmentDTO registerPatientForAppointment(Long appId, Long patientId) {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new PatientNotFound(patientId));
+                .orElseThrow(() -> new PatientNotFoundException(patientId));
 
-        Appointment availableApp = AppointmentValidation.appointmentAvailable(appointmentRepository, requestedAppStartTime, requestedAppFinishTime);
+        Appointment appointment = appointmentRepository.findById(appId)
+                .orElseThrow(() -> new AppointmentNotFoundException(appId));
 
-        availableApp.setPatient(patient);
-
-        return appointmentMapper.toDto(appointmentRepository.save(availableApp));
+        AppointmentValidation.appointmentAvailable(appointment);
+        AppointmentValidation.appOverLappingForPatient(appointmentRepository, patientId, appointment.getAppStartTime(), appointment.getAppFinishTime());
+        appointment.setPatient(patient);
+        return appointmentMapper.toDto(appointmentRepository.save(appointment));
     }
 }
 
