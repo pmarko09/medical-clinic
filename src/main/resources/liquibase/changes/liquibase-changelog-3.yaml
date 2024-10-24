@@ -15,12 +15,12 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_appointment_id
               - column:
-                  name: app_start_time
+                  name: appointment_start_time
                   type: TIMESTAMP
                   constraints:
                     nullable: false
               - column:
-                  name: app_finish_time
+                  name: appointment_finish_time
                   type: TIMESTAMP
                   constraints:
                     nullable: false

@@ -13,13 +13,13 @@ import com.pmarko09.medical_clinic.repository.DoctorRepository;
 import com.pmarko09.medical_clinic.repository.PatientRepository;
 import com.pmarko09.medical_clinic.validation.AppointmentValidation;
 import com.pmarko09.medical_clinic.validation.DoctorValidation;
-import com.pmarko09.medical_clinic.validation.PatientValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,20 +30,12 @@ public class AppointmentService {
     private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
 
-    public List<AppointmentDTO> getAllAppointments(Pageable pageable) {
-        return appointmentRepository.findAllApp(pageable).stream()
-                .map(appointmentMapper::toDto)
-                .toList();
-    }
-
-    public List<AppointmentDTO> getAllPatientAppointments(Pageable pageable, Long patientId) {
-        Patient patient = PatientValidation.patientExists(patientRepository, patientId);
-        PatientValidation.patientAppointmentsCheck(patient);
-
-        return appointmentRepository.findAllApp(pageable).stream()
-                .filter(appointment -> appointment.getPatient().getId().equals(patientId))
-                .map(appointmentMapper::toDto)
-                .toList();
+    public List<AppointmentDTO> getAllAppointments(Pageable pageable, Long patientId) {
+       return Optional.ofNullable(patientId)
+               .map(appointmentRepository::findByPatientId)
+               .orElse(appointmentRepository.findAllApp(pageable)).stream()
+               .map(appointmentMapper::toDto)
+               .toList();
     }
 
     @Transactional

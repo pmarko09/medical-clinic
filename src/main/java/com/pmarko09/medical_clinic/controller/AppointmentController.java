@@ -2,7 +2,6 @@ package com.pmarko09.medical_clinic.controller;
 
 import com.pmarko09.medical_clinic.model.dto.AppointmentDTO;
 import com.pmarko09.medical_clinic.model.dto.CreateAppointmentDTO;
-import com.pmarko09.medical_clinic.model.dto.PatientDTO;
 import com.pmarko09.medical_clinic.model.dto.PatientIdDTO;
 import com.pmarko09.medical_clinic.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +18,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @GetMapping
-    public List<AppointmentDTO> getAllAppointments(Pageable pageable) {
-        return appointmentService.getAllAppointments(pageable);
-    }
-
-    @GetMapping("/patient")
-    public List<AppointmentDTO> getAllPatientAppointments(@RequestParam Long patientId, Pageable pageable) {
-        return appointmentService.getAllPatientAppointments(pageable, patientId);
+    public List<AppointmentDTO> getAppointments(@RequestParam(required = false) Long patientId, Pageable pageable) {
+        return appointmentService.getAllAppointments(pageable, patientId);
     }
 
     @PostMapping

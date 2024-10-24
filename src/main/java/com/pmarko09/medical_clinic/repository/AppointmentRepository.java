@@ -20,13 +20,16 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "where :doctorId = a.doctor.id " +
             "and a.appointmentStartTime <= :appointmentFinishTime " +
             "and a.appointmentFinishTime >= :appointmentStartTime")
-    List<Appointment> findOverlappingAppointmentsForDoctor(Long doctorId, LocalDateTime appStartTime,
-                                                           LocalDateTime appFinishTime);
+    List<Appointment> findOverlappingAppointmentsForDoctor(Long doctorId, LocalDateTime appointmentStartTime,
+                                                           LocalDateTime appointmentFinishTime);
     @Query("select a " +
             "from Appointment a " +
             "where :patientId = a.patient.id " +
             "and a.appointmentStartTime <= :appointmentFinishTime " +
             "and a.appointmentFinishTime >= :appointmentStartTime")
-    List<Appointment> findOverlappingAppointmentsForPatient(Long patientId, LocalDateTime appStartTime,
-                                                            LocalDateTime appFinishTime);
+    List<Appointment> findOverlappingAppointmentsForPatient(Long patientId, LocalDateTime appointmentStartTime,
+                                                            LocalDateTime appointmentFinishTime);
+
+    @Query("select a from Appointment a where a.patient.id = :patientId")
+    List<Appointment> findByPatientId(Long patientId);
 }
