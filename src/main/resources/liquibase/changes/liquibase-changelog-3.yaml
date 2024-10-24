@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: APPOINTMENTS
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_appointment_id
+              - column:
+                  name: appointment_start_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: appointment_finish_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: doctor_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: int
+                  constraints:
+                    nullable: true
+              - addForeignKeyConstraint:
+                  baseTableName: APPOINTMENTS
+                  baseColumnName: doctor_id
+                  constraintName: fk_appointment_doctor
+                  referencedTableName: DOCTORS
+                  referencedColumnNames: id
+              - addForeignKeyConstraint:
+                  baseTableName: APPOINTMENTS
+                  baseColumnName: patient_id
+                  constraintName: fk_appointment_patient
+                  referencedTableName: PATIENTS
+                  referencedColumnNames: id

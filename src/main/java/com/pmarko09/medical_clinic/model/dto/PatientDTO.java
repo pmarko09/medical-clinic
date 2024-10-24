@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -19,5 +20,6 @@ public class PatientDTO {
     private String lastName;
     private String phoneNumber;
     private LocalDate birthday;
+    private Set<Long> appointmentIds;
 
 }
